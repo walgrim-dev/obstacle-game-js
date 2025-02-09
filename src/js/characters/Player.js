@@ -1,5 +1,5 @@
 import PlayerAnimate from '../animate/elements/PlayerAnimate.js';
-import checkCollisions from "../collisions/checkCollisions.js";
+import {checkCollisions} from "../collisions/checkCollisions.js";
 import GameEngine from "../game/GameEngine.js";
 
 export default class Player {
