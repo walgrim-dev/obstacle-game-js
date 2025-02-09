@@ -46,14 +46,18 @@ export default class LevelDesign {
                     movingObstacle.animation.textures.cutSize = 16;
                     this.obstacles.push(movingObstacle);
                 }
-                /*
+
 
                 if (this.mapOfElements[i][j] === 1) {
-                    this.ctx.save();
-                    this.ctx.fillStyle = "green";
-                    this.ctx.fillRect(i * this.tilesWidth, j * this.tilesHeight, this.tilesWidth, this.tilesHeight);
-                    this.ctx.restore();
-                }*/
+                    const exitObstacle = new Obstacle({
+                        x: i * this.tilesWidth,
+                        y: j * this.tilesHeight,
+                        w: this.tilesWidth,
+                        h: this.tilesHeight
+                    });
+                    exitObstacle.animation.action = "exitObstacle";
+                    this.obstacles.push(exitObstacle);
+                }
             }
         }
     }

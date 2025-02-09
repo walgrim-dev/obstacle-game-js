@@ -1,4 +1,5 @@
 import LevelDesign from "./LevelDesign.js";
+import {SecondLevel} from "./SecondLevel.js";
 
 class FirstLevel extends LevelDesign {
     constructor(canvas, ctx) {
@@ -25,6 +26,10 @@ class FirstLevel extends LevelDesign {
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2]
         ];
         super(map, canvas, ctx);
+    }
+
+    nextLevel = () => {
+        return new SecondLevel(this.canvas, this.ctx);
     }
 }
 

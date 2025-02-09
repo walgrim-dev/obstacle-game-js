@@ -29,6 +29,7 @@ export default class GameEngine {
 
     launch() {
         const audio = new Audio('music/flower_garden.ogg');
+        audio.volume = 0.1;
         document.addEventListener("click", () => {
             audio.play().then().catch((e) => console.log(e))
         })
@@ -40,7 +41,7 @@ export default class GameEngine {
         window.requestAnimationFrame(this.play);
     }
 
-    nextLevel = () => {
-
+    updateLevel = (level) => {
+        this.level = level;
     }
 }

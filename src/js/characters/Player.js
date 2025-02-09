@@ -1,5 +1,5 @@
 import PlayerAnimate from '../animate/elements/PlayerAnimate.js';
-import {checkCollisions} from "../collisions/checkCollisions.js";
+import {checkCollisions, objectColliding} from "../collisions/checkCollisions.js";
 import GameEngine from "../game/GameEngine.js";
 
 export default class Player {
@@ -62,6 +62,21 @@ export default class Player {
 
             if (!checkCollisions(GameEngine.getInstance().level.getObstacles(), newPos)) {
                 this.animation.updatePos(dx, dy);
+            }
+
+            let obstacle = objectColliding(GameEngine.getInstance().level.getObstacles(), newPos);
+            if (obstacle) {
+                if (obstacle.animation.action === "exitObstacle") {
+                    GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
+                    this.animation.pos = GameEngine.getInstance().level.getPlayerPos();
+                } else {
+                    this.animation.pos = {
+                        x: this.animation.pos.x - dx,
+                        y: this.animation.pos.y - dy,
+                        w: this.animation.pos.w,
+                        h: this.animation.pos.h
+                    };
+                }
             }
         }
         requestAnimationFrame(this.updateMovement);

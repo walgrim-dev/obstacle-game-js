@@ -14,6 +14,7 @@ export default class ObstacleTextureLoader {
             this.textures.set("idle", new AnimationSequence(this.idle()));
             // lil trick
             this.textures.set("movingObstacle", new AnimationSequence(this.movingEnnemies()));
+            this.textures.set("exitObstacle", new AnimationSequence(this.exit()));
             // Callback to say that everything is loaded now
             setTimeout(cb);
         }
@@ -37,6 +38,15 @@ export default class ObstacleTextureLoader {
         return [
             [80, 0],
             [96, 0]
+        ]
+    }
+
+    exit = () => {
+        return [
+            [64, 80],
+            [80, 80],
+            [96, 80],
+            [112, 80]
         ]
     }
 }
