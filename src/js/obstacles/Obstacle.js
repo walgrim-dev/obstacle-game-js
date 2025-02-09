@@ -1,8 +1,9 @@
 import ObstacleAnimate from '../animate/elements/ObstacleAnimate.js';
 
 export default class Obstacle {
-    constructor() {
+    constructor(coordinates) {
         this.animation = new ObstacleAnimate();
-        this.speed = 10;
+        this.animation.pos = coordinates;
+        this.speed = 5;
     }
 }

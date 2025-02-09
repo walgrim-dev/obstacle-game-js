@@ -5,13 +5,12 @@ export default class ObstacleTextureLoader {
         this.path = path;
         this.spriteSheet = new Image();
         this.textures = new Map();
-        this.cutSize = 16;
-        this.canvasSize = 48;
+        this.cutSize = 8;
     }
 
     load(cb) {
         this.spriteSheet.onload = () => {
-            this.textures.set("move", new AnimationSequence(this.move()));
+            this.textures.set("idle", new AnimationSequence(this.idle()));
             // Callback to say that everything is loaded now
             setTimeout(cb);
         }
@@ -25,10 +24,9 @@ export default class ObstacleTextureLoader {
     /**
      * @returns {*[][]}
      */
-    move = () => {
+    idle = () => {
         return [
-            [80, 0],
-            [96, 0]
+            [128, 192]
         ]
     }
 }

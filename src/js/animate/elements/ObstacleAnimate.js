@@ -1,18 +1,14 @@
-import AnimationSequence from "../AnimationSequence.js";
-import PlayerTextureLoader from "../textures/PlayerTextureLoader.js";
 import Animate from "../Animate.js";
+import ObstacleTextureLoader from "../textures/ObstacleTextureLoader.js";
 
-export default class PlayerAnimate {
+export default class ObstacleAnimate {
     constructor() {
-        this.textures = new PlayerTextureLoader('img/sprites.png');
+        this.textures = new ObstacleTextureLoader('img/sprites.png');
         this.textures.load(this.updateState);
         this.action = "idle";
         this.state = false;
         this.delta = 0;
-        this.pos = {
-            x: 0,
-            y: 0
-        }
+        this.pos = null;
         Animate.objToAnimate.push(this);
     }
 
@@ -34,9 +30,9 @@ export default class PlayerAnimate {
         let sequence = this.textures.getSequence(this.action);
         let x = sequence.getX();
         let y = sequence.getY();
-        ctx.drawImage(this.textures.spriteSheet, x, y, this.textures.cutSize, this.textures.cutSize, this.pos.x, this.pos.y, this.textures.canvasSize, this.textures.canvasSize);
+        ctx.drawImage(this.textures.spriteSheet, x, y, this.textures.cutSize, this.textures.cutSize, this.pos.x, this.pos.y, this.pos.w, this.pos.h);
         ctx.restore();
-        if (this.delta === 15) {
+        if (this.delta === 30) {
             sequence.nextFrame();
             this.delta = 0;
         }

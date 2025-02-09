@@ -5,7 +5,11 @@ import FirstLevel from "../levels/FirstLevel.js";
 const audio = new Audio('music/flower_garden.ogg');
 
 export default class GameEngine {
+    static instance = null;
     constructor(canvas) {
+        if (GameEngine.instance) {
+            return GameEngine.instance;
+        }
         this.canvas = document.querySelector(canvas);
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
@@ -13,9 +17,21 @@ export default class GameEngine {
         this.animate = new Animate(this, this.canvas, this.ctx);
         this.level = new FirstLevel(this.canvas, this.ctx);
         this.player = new Player();
+        GameEngine.instance = this;
+    }
+
+    static getInstance() {
+        if ( !GameEngine.instance) {
+            throw new Error('GameEngine is not initialized');
+        }
+        return GameEngine.instance;
     }
 
     launch() {
+        const audio = new Audio('music/flower_garden.ogg');
+        document.addEventListener("click", () => {
+            audio.play().then().catch((e) => console.log(e))
+        })
         this.play();
     }
 

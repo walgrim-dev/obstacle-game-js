@@ -1,4 +1,6 @@
 import PlayerAnimate from '../animate/elements/PlayerAnimate.js';
+import checkCollisions from "../collisions/checkCollisions.js";
+import GameEngine from "../game/GameEngine.js";
 
 export default class Player {
     constructor() {
@@ -43,13 +45,24 @@ export default class Player {
 
     updateMovement = () => {
         if (this.isMoving) {
+            // Calcul du déplacement prévu
             let dx = 0, dy = 0;
             if (this.moves.up) dy -= this.speed;
             if (this.moves.down) dy += this.speed;
             if (this.moves.left) dx -= this.speed;
             if (this.moves.right) dx += this.speed;
 
-            this.animation.updatePos(dx, dy);
+            // Création d'un nouvel objet de position pour le collider
+            const newPos = {
+                x: this.animation.pos.x + dx,
+                y: this.animation.pos.y + dy,
+                w: this.animation.pos.w,
+                h: this.animation.pos.h
+            };
+
+            if (!checkCollisions(GameEngine.getInstance().level.getObstacles(), newPos)) {
+                this.animation.updatePos(dx, dy);
+            }
         }
         requestAnimationFrame(this.updateMovement);
     }

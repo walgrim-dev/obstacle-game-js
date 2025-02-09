@@ -18,6 +18,10 @@ export default class PlayerAnimate {
         this.pos.y += y;
     }
 
+    actualPos = () => {
+        return this.pos;
+    }
+
     updateState = () => {
         this.state = true;
     }
@@ -27,7 +31,6 @@ export default class PlayerAnimate {
         let sequence = this.textures.getSequence(this.action);
         let x = sequence.getX();
         let y = sequence.getY();
-        console.log(this.pos);
         ctx.drawImage(this.textures.spriteSheet, x, y, this.textures.cutSize, this.textures.cutSize, this.pos.x, this.pos.y, this.textures.canvasSize, this.textures.canvasSize);
         ctx.restore();
         if (this.delta === 15) {

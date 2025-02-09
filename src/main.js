@@ -4,7 +4,7 @@ import GameEngine from "./js/game/GameEngine.js";
 addEventListener('load', exec);
 
 /**
- * On DOM loaded
+ * On load
  */
 function exec() {
     let gameEngine = new GameEngine('#gameCanvas');
