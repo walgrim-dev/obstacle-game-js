@@ -37,7 +37,7 @@ export default class GameEngine {
 
     play = () => {
         this.animate.animate();
-        requestAnimationFrame(this.play);
+        window.requestAnimationFrame(this.play);
     }
 
     nextLevel = () => {

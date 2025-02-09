@@ -24,21 +24,29 @@ export default class LevelDesign {
                     }
                 }
                 if (this.mapOfElements[i][j] === 2) {
-                    this.obstacles.push(
-                        new Obstacle({
-                            x: i * this.tilesWidth,
-                            y: j * this.tilesHeight,
-                            w: this.tilesWidth,
-                            h: this.tilesHeight
-                        }));
+                    const obstacle = new Obstacle({
+                        x: i * this.tilesWidth,
+                        y: j * this.tilesHeight,
+                        w: this.tilesWidth,
+                        h: this.tilesHeight
+                    });
+                    obstacle.animation.textures.cutSize = 8;
+                    this.obstacles.push(obstacle);
+                }
+
+
+                if (this.mapOfElements[i][j] === 3) {
+                    const movingObstacle = new Obstacle({
+                        x: i * this.tilesWidth,
+                        y: j * this.tilesHeight,
+                        w: this.tilesWidth,
+                        h: this.tilesHeight
+                    });
+                    movingObstacle.animation.action = "movingObstacle";
+                    movingObstacle.animation.textures.cutSize = 16;
+                    this.obstacles.push(movingObstacle);
                 }
                 /*
-                if (this.mapOfElements[i][j] === 3) {
-                    this.ctx.save();
-                    this.ctx.fillStyle = "blue";
-                    this.ctx.fillRect(i * this.tilesWidth, j * this.tilesHeight, this.tilesWidth, this.tilesHeight);
-                    this.ctx.restore();
-                }
 
                 if (this.mapOfElements[i][j] === 1) {
                     this.ctx.save();
@@ -48,10 +56,10 @@ export default class LevelDesign {
                 }*/
             }
         }
-        console.log(this.obstacles);
     }
-
+    /*
     generate() {
+        console.log("called now")
         for (let tiles of this.obstacles) {
             tiles.animation.animate(this.ctx);
         }
@@ -78,8 +86,8 @@ export default class LevelDesign {
                     this.ctx.restore();
                 }
             }
-        }*/
-    }
+        }
+    }*/
 
     getPlayerPos = () => {
         if (this.basicPlayerPos === null) {

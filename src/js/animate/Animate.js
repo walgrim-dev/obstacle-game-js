@@ -1,5 +1,3 @@
-import AnimationSequence from "./AnimationSequence.js";
-
 export default class Animate {
     static objToAnimate = [];
 
@@ -15,6 +13,7 @@ export default class Animate {
         if (this.gameEngine.player.animation.pos === null) {
             this.gameEngine.player.animation.pos = this.gameEngine.level.getPlayerPos();
         }
+
         for (let obj of Animate.objToAnimate) {
             if (!obj.state) continue;
             obj.animate(this.ctx);

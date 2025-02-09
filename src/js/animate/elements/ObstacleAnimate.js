@@ -3,6 +3,7 @@ import ObstacleTextureLoader from "../textures/ObstacleTextureLoader.js";
 
 export default class ObstacleAnimate {
     constructor() {
+        // Pas bon je le changerai plus tard
         this.textures = new ObstacleTextureLoader('img/sprites.png');
         this.textures.load(this.updateState);
         this.action = "idle";
@@ -15,10 +16,6 @@ export default class ObstacleAnimate {
     updatePos = (x, y) => {
         this.pos.x += x;
         this.pos.y += y;
-    }
-
-    set newMovement(movement) {
-        this.action = movement;
     }
 
     updateState = () => {

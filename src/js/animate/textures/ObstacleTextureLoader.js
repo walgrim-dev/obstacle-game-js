@@ -1,16 +1,19 @@
 import AnimationSequence from "../AnimationSequence.js";
 
 export default class ObstacleTextureLoader {
-    constructor(path) {
+    constructor(path, callFunc) {
         this.path = path;
         this.spriteSheet = new Image();
         this.textures = new Map();
-        this.cutSize = 8;
+        this.cutSize = 16;
+        this.load(callFunc);
     }
 
     load(cb) {
         this.spriteSheet.onload = () => {
             this.textures.set("idle", new AnimationSequence(this.idle()));
+            // lil trick
+            this.textures.set("movingObstacle", new AnimationSequence(this.movingEnnemies()));
             // Callback to say that everything is loaded now
             setTimeout(cb);
         }
@@ -27,6 +30,13 @@ export default class ObstacleTextureLoader {
     idle = () => {
         return [
             [128, 192]
+        ]
+    }
+
+    movingEnnemies = () => {
+        return [
+            [80, 0],
+            [96, 0]
         ]
     }
 }
