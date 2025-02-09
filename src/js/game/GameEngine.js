@@ -1,19 +1,23 @@
-import loadTextures from "../animate/loadedTextures.js";
-
-const TEXTURES = loadTextures();
+import PlayerTextureLoader from "../animate/textures/PlayerTextureLoader.js";
+import Animate from "../animate/Animate.js";
+import Player from "../characters/Player.js";
 
 export default class GameEngine {
     constructor(canvas) {
         this.canvas = document.querySelector(canvas);
         this.ctx = this.canvas.getContext('2d');
-        console.log(TEXTURES);
+        this.animate = new Animate(this.canvas, this.ctx);
     }
 
-    prepare() {
-
+    launch() {
+        // Player initialize itself + the textures behind + bindings
+        this.player = new Player();
+        this.player.movement();
+        this.play();
     }
 
-    start() {
-
+    play = () => {
+        this.animate.animate();
+        requestAnimationFrame(this.play);
     }
 }

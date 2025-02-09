@@ -8,8 +8,7 @@ addEventListener('load', exec);
  */
 function exec() {
     let gameEngine = new GameEngine('#gameCanvas');
-    gameEngine.prepare();
-    gameEngine.start();
+    gameEngine.launch();
 }
 
 /*
