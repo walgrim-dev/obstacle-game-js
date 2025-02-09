@@ -1,7 +1,7 @@
 import LevelDesign from "./LevelDesign.js";
 
 class FirstLevel extends LevelDesign {
-    constructor() {
+    constructor(canvas, ctx) {
         let map = [
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], // Mur du haut
             [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2], // Bordures et terrain vide
@@ -24,7 +24,7 @@ class FirstLevel extends LevelDesign {
             [2, 0, 0, 0, 0, 2, 0, 3, 0, 0, 0, 2, 0, 0, 2, 0, 3, 0, 0, 2],
             [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2] // Sortie en bas à droite
         ];
-        super(map);
+        super(map, canvas, ctx);
     }
 }
 

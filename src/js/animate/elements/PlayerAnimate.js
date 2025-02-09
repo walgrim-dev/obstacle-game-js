@@ -24,9 +24,8 @@ export default class PlayerAnimate {
         let sequence = this.textures.getSequence(this.action);
         let x = sequence.getX();
         let y = sequence.getY();
-        ctx.drawImage(this.textures.spriteSheet, x, y, 16, 16, 0, 0, 16, 16);
+        ctx.drawImage(this.textures.spriteSheet, x, y, this.textures.cutSize, this.textures.cutSize, 20, 20, this.textures.canvasSize, this.textures.canvasSize);
         ctx.restore();
         sequence.nextFrame();
-        console.log(sequence);
     }
 }

@@ -9,9 +9,27 @@ export default class Player {
 
     movement = () => {
         addEventListener('keydown', (ev) => {
-            if (ev.key === 'ArrowUp') {
-                console.log("Arrow up");
+            if (ev.key === 'ArrowUp' || ev.key === 'z') {
+                this.animation.action = "move";
+            } else if (ev.key === 'ArrowLeft' || ev.key === 'q') {
+                this.animation.action = "move";
+            } else if (ev.key === 'ArrowDown' || ev.key === 's') {
+                this.animation.action = "move";
+            } else if (ev.key === 'ArrowRight' || ev.key === 'd') {
+                this.animation.action = "move";
             }
-        })
+        });
+
+        addEventListener('keyup', (ev) => {
+            if (ev.key === 'ArrowUp' || ev.key === 'z') {
+                this.animation.action = "idle";
+            } else if (ev.key === 'ArrowLeft' || ev.key === 'q') {
+                this.animation.action = "idle";
+            } else if (ev.key === 'ArrowDown' || ev.key === 's') {
+                this.animation.action = "idle";
+            } else if (ev.key === 'ArrowRight' || ev.key === 'd') {
+                this.animation.action = "idle";
+            }
+        });
     }
 }

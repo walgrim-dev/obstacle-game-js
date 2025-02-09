@@ -2,7 +2,6 @@ export default class AnimationSequence {
     /**
      * Constructor
      * @param sequence Sequence of imgs
-     * @param split
      */
     constructor(sequence) {
         this.sequence = sequence;

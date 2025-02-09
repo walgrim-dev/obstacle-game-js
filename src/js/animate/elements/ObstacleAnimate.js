@@ -1,6 +1,5 @@
 import ObstacleTextureLoader from "../textures/ObstacleTextureLoader.js";
 import Animate from "../Animate.js";
-import {c} from "vite/dist/node/moduleRunnerTransport.d-CXw_Ws6P.js";
 
 export default class ObstacleAnimate {
     constructor(ctx) {

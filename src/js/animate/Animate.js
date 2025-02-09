@@ -3,13 +3,15 @@ import AnimationSequence from "./AnimationSequence.js";
 export default class Animate {
     static objToAnimate = [];
 
-    constructor(canvas, ctx) {
+    constructor(gameEngine, canvas, ctx) {
         this.canvas = canvas;
         this.ctx = ctx;
+        this.gameEngine = gameEngine;
     }
 
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.gameEngine.level.generateLayers();
         for (let obj of Animate.objToAnimate) {
             if (!obj.state) return;
             obj.animate(this.ctx);
