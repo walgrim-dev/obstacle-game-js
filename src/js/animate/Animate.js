@@ -11,7 +11,10 @@ export default class Animate {
 
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.gameEngine.level.generateLayers();
+        this.gameEngine.level.generate();
+        if (this.gameEngine.player.animation.pos === null) {
+            this.gameEngine.player.animation.pos = this.gameEngine.level.getPlayerPos();
+        }
         for (let obj of Animate.objToAnimate) {
             if (!obj.state) return;
             obj.animate(this.ctx);

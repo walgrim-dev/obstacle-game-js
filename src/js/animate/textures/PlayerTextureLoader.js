@@ -6,7 +6,7 @@ export default class PlayerTextureLoader {
         this.spriteSheet = new Image();
         this.textures = new Map();
         this.cutSize = 16;
-        this.canvasSize = 64;
+        this.canvasSize = 48;
     }
 
     load(cb) {
@@ -25,7 +25,7 @@ export default class PlayerTextureLoader {
 
     idle = () => {
         return [
-            [0, 88]
+            [0, 88],
         ]
     }
 
@@ -36,7 +36,7 @@ export default class PlayerTextureLoader {
         return [
             [16, 88],
             [32, 88],
-            [64, 88]
+            [48, 88],
         ]
     }
 }

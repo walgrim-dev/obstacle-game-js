@@ -5,7 +5,8 @@ export default class ObstacleTextureLoader {
         this.path = path;
         this.spriteSheet = new Image();
         this.textures = new Map();
-        this.size = 16;
+        this.cutSize = 16;
+        this.canvasSize = 48;
     }
 
     load(cb) {

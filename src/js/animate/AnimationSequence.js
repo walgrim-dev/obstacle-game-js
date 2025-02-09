@@ -9,7 +9,6 @@ export default class AnimationSequence {
     }
 
     nextFrame = () => {
-        console.log(this.sequence.length);
         if (this.currentFrame < this.sequence.length - 1) {
             this.currentFrame++;
         } else {

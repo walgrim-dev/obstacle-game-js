@@ -8,11 +8,14 @@ export default class PlayerAnimate {
         this.textures.load(this.updateState);
         this.action = "idle";
         this.state = false;
+        this.delta = 0;
+        this.pos = null;
         Animate.objToAnimate.push(this);
     }
 
-    set newMovement(movement) {
-        this.action = movement;
+    updatePos = (x, y) => {
+        this.pos.x += x;
+        this.pos.y += y;
     }
 
     updateState = () => {
@@ -24,8 +27,12 @@ export default class PlayerAnimate {
         let sequence = this.textures.getSequence(this.action);
         let x = sequence.getX();
         let y = sequence.getY();
-        ctx.drawImage(this.textures.spriteSheet, x, y, this.textures.cutSize, this.textures.cutSize, 20, 20, this.textures.canvasSize, this.textures.canvasSize);
+        ctx.drawImage(this.textures.spriteSheet, x, y, this.textures.cutSize, this.textures.cutSize, this.pos.x, this.pos.y, this.textures.canvasSize, this.textures.canvasSize);
         ctx.restore();
-        sequence.nextFrame();
+        if (this.delta === 15) {
+            sequence.nextFrame();
+            this.delta = 0;
+        }
+        this.delta++;
     }
 }
