@@ -69,13 +69,6 @@ export default class Player {
                 if (obstacle.animation.action === "exitObstacle") {
                     GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
                     this.animation.pos = GameEngine.getInstance().level.getPlayerPos();
-                } else {
-                    this.animation.pos = {
-                        x: this.animation.pos.x - dx,
-                        y: this.animation.pos.y - dy,
-                        w: this.animation.pos.w,
-                        h: this.animation.pos.h
-                    };
                 }
             }
         }

@@ -43,10 +43,10 @@ export default class ObstacleTextureLoader {
 
     exit = () => {
         return [
-            [64, 80],
-            [80, 80],
-            [96, 80],
-            [112, 80]
+            [64, 72],
+            [80, 72],
+            [96, 72],
+            [112, 72]
         ]
     }
 }
