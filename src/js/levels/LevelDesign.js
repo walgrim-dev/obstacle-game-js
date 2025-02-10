@@ -97,7 +97,9 @@ export default class LevelDesign {
         if (this.basicPlayerPos === null) {
             throw new Error("Player position is not defined");
         }
-        return this.basicPlayerPos;
+        const playerPos = {};
+        Object.assign(playerPos, this.basicPlayerPos);
+        return playerPos;
     }
 
     getObstacles = () => {

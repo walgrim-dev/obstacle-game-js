@@ -2,6 +2,7 @@
 
 Pour lancer le jeu, il suffit de lancer les commandes suivantes:
 ```
+git clone https://github.com/walgrim-dev/obstacle-game-js.git
 npm install
 npm run build
 npm run preview

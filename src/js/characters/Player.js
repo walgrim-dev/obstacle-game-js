@@ -77,6 +77,20 @@ export default class Player {
                     GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
                     this.animation.pos = GameEngine.getInstance().level.getPlayerPos();
                 }
+                if (obstacle.animation.action === "movingObstacle") {
+                    console.log(GameEngine.getInstance().level.basicPlayerPos);
+                    this.animation.test(GameEngine.getInstance().level.basicPlayerPos.x, GameEngine.getInstance().level.basicPlayerPos.y);
+                }
+            }
+        } else {
+            if (GameEngine.getInstance()) {
+                let obstacle = objectColliding(GameEngine.getInstance().level.getObstacles(), this.animation.actualPos());
+                if (obstacle) {
+                    if (obstacle.animation.action === "movingObstacle") {
+                        console.log(GameEngine.getInstance().level.basicPlayerPos);
+                        this.animation.test(GameEngine.getInstance().level.basicPlayerPos.x, GameEngine.getInstance().level.basicPlayerPos.y);
+                    }
+                }
             }
         }
         requestAnimationFrame(this.updateMovement);

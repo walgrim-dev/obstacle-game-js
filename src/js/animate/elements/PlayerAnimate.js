@@ -18,6 +18,11 @@ export default class PlayerAnimate {
         this.pos.y += y;
     }
 
+    test = (x, y) => {
+        this.pos.x = x;
+        this.pos.y = y;
+    }
+
     actualPos = () => {
         return this.pos;
     }
