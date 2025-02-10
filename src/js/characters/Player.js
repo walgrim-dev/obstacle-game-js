@@ -23,20 +23,23 @@ export default class Player {
     listenToKeys = () => {
         addEventListener('keydown', (ev) => {
             ev.preventDefault();
-            if (ev.key === 'z') this.moves.up = true;
-            else if (ev.key === 'q') this.moves.left = true;
-            else if (ev.key === 's') this.moves.down = true;
-            else if (ev.key === 'd') this.moves.right = true;
+            if (ev.key === 'z' || ev.key === 'Z' || ev.key === 'ArrowUp') this.moves.up = true;
+            else if (ev.key === 'q' || ev.key === 'Q' || ev.key === 'ArrowLeft') this.moves.left = true;
+            else if (ev.key === 's' || ev.key === 'S' || ev.key === 'ArrowDown') this.moves.down = true;
+            else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = true;
 
-            this.animation.action = "move";
-            this.isMoving = true;
+            if (this.moves.up || this.moves.down || this.moves.left || this.moves.right) {
+                this.animation.action = "move";
+                this.isMoving = true;
+            }
         });
 
         addEventListener('keyup', (ev) => {
-            if (ev.key === 'z') this.moves.up = false;
-            else if (ev.key === 'q') this.moves.left = false;
-            else if (ev.key === 's') this.moves.down = false;
-            else if (ev.key === 'd') this.moves.right = false;
+            ev.preventDefault();
+            if (ev.key === 'z' || ev.key === 'Z' || ev.key === 'ArrowUp') this.moves.up = false;
+            else if (ev.key === 'q' || ev.key === 'Q' || ev.key === 'ArrowLeft') this.moves.left = false;
+            else if (ev.key === 's' || ev.key === 'S' || ev.key === 'ArrowDown') this.moves.down = false;
+            else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = false;
 
             if (!this.moves.up && !this.moves.down && !this.moves.left && !this.moves.right) {
                 this.animation.action = "idle";
