@@ -7,7 +7,7 @@ export default class PlayerTextureLoader {
         this.spriteSheet = new Image();
         this.textures = new Map();
         this.cutSize = 16;
-        this.canvasSize = 64;
+        this.canvasSize = 48;
     }
 
     load(cb) {
