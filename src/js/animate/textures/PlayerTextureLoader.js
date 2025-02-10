@@ -1,4 +1,5 @@
 import AnimationSequence from "../AnimationSequence.js";
+import GameManager from "../../game/GameEngine.js";
 
 export default class PlayerTextureLoader {
     constructor(path) {
@@ -6,7 +7,7 @@ export default class PlayerTextureLoader {
         this.spriteSheet = new Image();
         this.textures = new Map();
         this.cutSize = 16;
-        this.canvasSize = 48;
+        this.canvasSize = 64;
     }
 
     load(cb) {

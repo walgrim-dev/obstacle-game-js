@@ -1,3 +1,5 @@
+import GameEngine from "../game/GameEngine.js";
+
 export default class Animate {
     static objToAnimate = [];
 
@@ -10,6 +12,11 @@ export default class Animate {
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         //this.gameEngine.level.generate();
+
+        if (GameEngine.getInstance() === null) {
+            return;
+        }
+
         if (this.gameEngine.player.animation.pos === null) {
             this.gameEngine.player.animation.pos = this.gameEngine.level.getPlayerPos();
         }

@@ -21,7 +21,7 @@ export default class GameEngine {
     }
 
     static getInstance() {
-        if ( !GameEngine.instance) {
+        if (!GameEngine.instance) {
             throw new Error('GameEngine is not initialized');
         }
         return GameEngine.instance;

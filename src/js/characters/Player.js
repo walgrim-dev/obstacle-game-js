@@ -1,6 +1,8 @@
 import PlayerAnimate from '../animate/elements/PlayerAnimate.js';
 import {checkCollisions, objectColliding} from "../collisions/checkCollisions.js";
 import GameEngine from "../game/GameEngine.js";
+import Animate from "../animate/Animate.js";
+import ObstacleAnimate from "../animate/elements/ObstacleAnimate.js";
 
 export default class Player {
     constructor() {
@@ -67,6 +69,8 @@ export default class Player {
             let obstacle = objectColliding(GameEngine.getInstance().level.getObstacles(), newPos);
             if (obstacle) {
                 if (obstacle.animation.action === "exitObstacle") {
+                    // Hotfix
+                    Animate.objToAnimate = Animate.objToAnimate.filter(o => o instanceof PlayerAnimate);
                     GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
                     this.animation.pos = GameEngine.getInstance().level.getPlayerPos();
                 }
