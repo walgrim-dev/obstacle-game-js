@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Pacman en Canvas</title>
+  <style>
+    canvas {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+<canvas id="pacmanCanvas" width="400" height="400"></canvas>
+
+<script>
+  window.onload = init;
+  function init() {
+    const canvas = document.getElementById('pacmanCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // on part de PI/6 pour le début et on arrive à 11PI/6 en endpoint
+    ctx.beginPath();
+    ctx.moveTo(200, 200);
+    ctx.arc(200, 200, 100, Math.PI/6, 11 * Math.PI/6, false);
+    ctx.closePath();
+    ctx.fillStyle = "yellow";
+    ctx.fill();
+
+    // l'oeil
+    ctx.beginPath();
+    ctx.arc(200, 150, 15, 0, 2 * Math.PI);
+    ctx.fillStyle = "gray";
+    ctx.fill();
+  }
+</script>
+</body>
+</html>
