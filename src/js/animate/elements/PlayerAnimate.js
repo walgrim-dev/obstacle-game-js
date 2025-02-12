@@ -3,28 +3,14 @@ import PlayerTextureLoader from "../textures/PlayerTextureLoader.js";
 import Animate from "../Animate.js";
 
 export default class PlayerAnimate {
-    constructor() {
+    constructor(player, tileInfo) {
+        this.player = player;
         this.textures = new PlayerTextureLoader('img/sprites.png');
         this.textures.load(this.updateState);
-        this.action = "idle";
+        this.tileInfo = tileInfo;
         this.state = false;
         this.delta = 0;
-        this.pos = null;
         Animate.objToAnimate.push(this);
-    }
-
-    updatePos = (x, y) => {
-        this.pos.x += x;
-        this.pos.y += y;
-    }
-
-    test = (x, y) => {
-        this.pos.x = x;
-        this.pos.y = y;
-    }
-
-    actualPos = () => {
-        return this.pos;
     }
 
     updateState = () => {
@@ -32,11 +18,22 @@ export default class PlayerAnimate {
     }
 
     animate = (ctx) => {
+        // Move player
+        this.player.move();
+
         ctx.save();
-        let sequence = this.textures.getSequence(this.action);
+        let sequence = this.textures.getSequence(this.tileInfo.state);
         let x = sequence.getX();
         let y = sequence.getY();
-        ctx.drawImage(this.textures.spriteSheet, x, y, this.textures.cutSize, this.textures.cutSize, this.pos.x, this.pos.y, this.textures.canvasSize, this.textures.canvasSize);
+        ctx.drawImage(this.textures.spriteSheet,
+            x,
+            y,
+            this.tileInfo.size.cutSize,
+            this.tileInfo.size.cutSize,
+            this.tileInfo.coordinates.x,
+            this.tileInfo.coordinates.y,
+            this.tileInfo.size.w,
+            this.tileInfo.size.h);
         ctx.restore();
         if (this.delta === 15) {
             sequence.nextFrame();

@@ -1,4 +1,5 @@
 import Obstacle from "../obstacles/Obstacle.js";
+import TileInfo from "../coordinates/TileInfo.js";
 
 export default class LevelDesign {
     constructor(mapOfElements, canvas, ctx) {
@@ -6,8 +7,8 @@ export default class LevelDesign {
         this.canvas = canvas;
         this.ctx = ctx;
         this.obstacles = [];
-        this.tilesWidth = Math.round(this.canvas.width / 20);
-        this.tilesHeight = Math.round(this.canvas.height / 20);
+        this.tilesWidth = this.canvas.width / 20;
+        this.tilesHeight = this.canvas.height / 20;
         this.basicPlayerPos = null;
         this.parseData();
     }
@@ -18,82 +19,36 @@ export default class LevelDesign {
                 if (this.mapOfElements[i][j] === -1) {
                     this.basicPlayerPos = {
                         x: i * this.tilesWidth,
-                        y: j * this.tilesHeight,
-                        w: 48,
-                        h: 48
+                        y: j * this.tilesHeight
                     }
                 }
                 if (this.mapOfElements[i][j] === 2) {
-                    const obstacle = new Obstacle({
-                        x: i * this.tilesWidth,
-                        y: j * this.tilesHeight,
-                        w: this.tilesWidth,
-                        h: this.tilesHeight
-                    });
-                    obstacle.animation.textures.cutSize = 8;
+                    const tileInfo = new TileInfo(j * this.tilesWidth,
+                        i * this.tilesHeight, 0, 0, this.tilesWidth, this.tilesHeight, 8, "idle");
+                    const obstacle = new Obstacle(tileInfo);
                     this.obstacles.push(obstacle);
                 }
 
 
                 if (this.mapOfElements[i][j] === 3) {
-                    const movingObstacle = new Obstacle({
-                        x: i * this.tilesWidth,
-                        y: j * this.tilesHeight,
-                        w: this.tilesWidth,
-                        h: this.tilesHeight
-                    });
-                    movingObstacle.animation.action = "movingObstacle";
-                    movingObstacle.animation.textures.cutSize = 16;
+                    const tileInfo = new TileInfo(j * this.tilesWidth,
+                        i * this.tilesHeight + (this.tilesHeight * 0.05 / 2), 1, 1, this.tilesWidth, this.tilesHeight*0.95, 16, "movingObstacle");
+                    const movingObstacle = new Obstacle(tileInfo);
                     this.obstacles.push(movingObstacle);
                 }
 
 
                 if (this.mapOfElements[i][j] === 1) {
-                    const exitObstacle = new Obstacle({
-                        x: i * this.tilesWidth,
-                        y: j * this.tilesHeight,
-                        w: this.tilesWidth,
-                        h: this.tilesHeight
-                    });
-                    exitObstacle.animation.action = "exitObstacle";
+                    const tileInfo = new TileInfo(j * this.tilesWidth,
+                        i * this.tilesHeight, 20, 20, this.tilesWidth, this.tilesHeight, 16, "exitObstacle");
+                    const exitObstacle = new Obstacle(tileInfo);
                     this.obstacles.push(exitObstacle);
                 }
             }
         }
     }
-    /*
-    generate() {
-        console.log("called now")
-        for (let tiles of this.obstacles) {
-            tiles.animation.animate(this.ctx);
-        }
-        /*for (let i = 0; i < this.mapOfElements.length; i++) {
-            for (let j = 0; j < this.mapOfElements.length; j++) {
-                if (this.mapOfElements[i][j] === 2) {
-                    this.ctx.save();
-                    this.ctx.fillStyle = "red";
-                    this.ctx.fillRect(i * this.tilesWidth, j * this.tilesHeight, this.tilesWidth, this.tilesHeight);
-                    this.ctx.restore();
-                }
 
-                if (this.mapOfElements[i][j] === 3) {
-                    this.ctx.save();
-                    this.ctx.fillStyle = "blue";
-                    this.ctx.fillRect(i * this.tilesWidth, j * this.tilesHeight, this.tilesWidth, this.tilesHeight);
-                    this.ctx.restore();
-                }
-
-                if (this.mapOfElements[i][j] === 1) {
-                    this.ctx.save();
-                    this.ctx.fillStyle = "green";
-                    this.ctx.fillRect(i * this.tilesWidth, j * this.tilesHeight, this.tilesWidth, this.tilesHeight);
-                    this.ctx.restore();
-                }
-            }
-        }
-    }*/
-
-    getPlayerPos = () => {
+    getPlayerStartingPos = () => {
         if (this.basicPlayerPos === null) {
             throw new Error("Player position is not defined");
         }

@@ -3,16 +3,16 @@ import {objectColliding} from "../collisions/checkCollisions.js";
 import GameEngine from "../game/GameEngine.js";
 
 export default class Obstacle {
-    constructor(coordinates) {
-        this.animation = new ObstacleAnimate();
-        this.animation.pos = coordinates;
-        this.speed = 5;
-        this.updateMovement();
+    constructor(tileInfo) {
+        this.animation = new ObstacleAnimate(this, tileInfo);
     }
 
-    updateMovement = () => {
-        if (this.animation.action === "movingObstacle") {
-            const before = this.animation.pos.x;
+    move = () => {
+        const tileInfo = this.animation.tileInfo;
+        if (tileInfo.state === "movingObstacle") {
+            tileInfo.coordinates.x += tileInfo.coordinates.vx;
+            /*
+            const before = this.animation.tileInfo;
 
             this.animation.pos.x += this.speed;
 
@@ -25,7 +25,8 @@ export default class Obstacle {
                 this.animation.pos.x = before;
                 this.speed *= -1;
             }
+             */
         }
-        window.requestAnimationFrame(this.updateMovement);
+        //window.requestAnimationFrame(this.updateMovement);
     }
 }

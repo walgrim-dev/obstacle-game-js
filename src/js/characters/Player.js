@@ -1,14 +1,12 @@
 import PlayerAnimate from '../animate/elements/PlayerAnimate.js';
-import {checkCollisions, objectColliding} from "../collisions/checkCollisions.js";
+import {rectsOverlap, objectColliding} from "../collisions/checkCollisions.js";
 import GameEngine from "../game/GameEngine.js";
 import Animate from "../animate/Animate.js";
 import ObstacleAnimate from "../animate/elements/ObstacleAnimate.js";
 
 export default class Player {
-    constructor() {
-        this.animation = new PlayerAnimate();
-        this.speed = 5;
-        this.level = 1;
+    constructor(tileInfo) {
+        this.animation = new PlayerAnimate(this, tileInfo);
         this.moves = {
             up: false,
             down: false,
@@ -17,7 +15,6 @@ export default class Player {
         };
         this.isMoving = false;
         this.listenToKeys();
-        this.updateMovement();
     }
 
     listenToKeys = () => {
@@ -48,21 +45,28 @@ export default class Player {
         });
     }
 
-    updateMovement = () => {
+    move = () => {
         if (this.isMoving) {
             // Calcul du déplacement prévu
-            let dx = 0, dy = 0;
-            if (this.moves.up) dy -= this.speed;
-            if (this.moves.down) dy += this.speed;
-            if (this.moves.left) dx -= this.speed;
-            if (this.moves.right) dx += this.speed;
+            const x = this.animation.tileInfo.coordinates.x;
+            const y = this.animation.tileInfo.coordinates.y;
+            const vx = this.animation.tileInfo.coordinates.vx;
+            const vy = this.animation.tileInfo.coordinates.vy;
+            const w = this.animation.tileInfo.size.w;
+            const h = this.animation.tileInfo.size.h;
+
+            /*
+            if (this.moves.up) y -= vy;
+            if (this.moves.down) y += vy;
+            if (this.moves.left) dx -= vx;
+            if (this.moves.right) dx += vx;
 
             // Création d'un nouvel objet de position pour le collider
             const newPos = {
-                x: this.animation.pos.x + dx,
-                y: this.animation.pos.y + dy,
-                w: this.animation.pos.w,
-                h: this.animation.pos.h
+                x: x + vx,
+                y: y + vy,
+                w: w,
+                h: h
             };
 
             if (!checkCollisions(GameEngine.getInstance().level.getObstacles(), newPos)) {
@@ -75,7 +79,7 @@ export default class Player {
                     // Hotfix
                     Animate.objToAnimate = Animate.objToAnimate.filter(o => o instanceof PlayerAnimate);
                     GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
-                    this.animation.pos = GameEngine.getInstance().level.getPlayerPos();
+                    this.animation.pos = GameEngine.getInstance().level.getPlayerStartingPos();
                 }
                 if (obstacle.animation.action === "movingObstacle") {
                     console.log(GameEngine.getInstance().level.basicPlayerPos);
@@ -91,8 +95,7 @@ export default class Player {
                         this.animation.test(GameEngine.getInstance().level.basicPlayerPos.x, GameEngine.getInstance().level.basicPlayerPos.y);
                     }
                 }
-            }
+            }*/
         }
-        requestAnimationFrame(this.updateMovement);
     }
 }

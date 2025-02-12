@@ -6,7 +6,7 @@ addEventListener('load', exec);
 /**
  * On load
  */
-function exec() {
+async function exec() {
     let gameEngine = new GameEngine('#gameCanvas');
     gameEngine.launch();
 }

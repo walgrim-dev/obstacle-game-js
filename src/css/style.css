@@ -13,7 +13,5 @@ body {
 #gameCanvas {
   margin: 0;
   padding: 0;
-  height: calc(100vh - (var(--borderSize) * 2));
-  width: calc(100vw - (var(--borderSize) * 2));
   border: var(--borderSize) solid red;
 }

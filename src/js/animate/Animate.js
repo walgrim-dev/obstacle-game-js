@@ -9,22 +9,31 @@ export default class Animate {
         this.gameEngine = gameEngine;
     }
 
-    animate() {
+    lastTime = 0;
+    animate(time) {
+        // time c'est le temps écoulé depuis le début de la première exécution de cette fonction
+        // en millisecondes mais avec une précision au millième de milliseconde
+        // Pour l'animation basée sur le temps, on va calculer le temps écoule
+        // entre deux images
+        const delta = time - this.lastTime;
+
+        // on va utiliser ce delta pour calculer la distance des déplacement de tous les objets
+        // formule v = distance / temps, du coup si on connait temps, et si les objets ont une
+        // vitesse en pixels par seconde, on peut calculer d = v * temps
+
+        //console.log(delta);
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        //this.gameEngine.level.generate();
 
         if (GameEngine.getInstance() === null) {
             return;
         }
 
-        if (this.gameEngine.player.animation.pos === null) {
-            this.gameEngine.player.animation.pos = this.gameEngine.level.getPlayerPos();
-        }
-
-        for (let obj of Animate.objToAnimate) {
+        for (const obj of Animate.objToAnimate) {
             if (!obj.state) continue;
             obj.animate(this.ctx);
         }
+        this.lastTime = time;
         /**
          * Needs to animate :
          * Player moves
