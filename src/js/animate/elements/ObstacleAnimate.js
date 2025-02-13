@@ -23,6 +23,7 @@ export default class ObstacleAnimate {
     animate = (ctx, delta) => {
         // Move obstacle (if movingObstacle)
 
+
         /*
         for (let i = 0; i < 1000000; i++) {
 
@@ -31,7 +32,10 @@ export default class ObstacleAnimate {
         const gameEngine = GameEngine.getInstance();
         if (gameEngine == null) return;
 
+        const oldX = this.tileInfo.coordinates.x;
         this.obstacle.move(delta);
+
+        //console.log(delta)
 
         if (this.tileInfo.state === "movingObstacle") {
             const obstacles = gameEngine.level.getObstacles().filter(o => o !== this.obstacle);
@@ -42,11 +46,10 @@ export default class ObstacleAnimate {
 
             let collidingObstacle = objectColliding(x1, y1, w1, h1, obstacles);
             if (collidingObstacle) {
-                // droite
-                if ((this.tileInfo.coordinates.x + this.tileInfo.size.w) + calculateDistanceToMove(delta, this.tileInfo.coordinates.vx) > collidingObstacle.animation.tileInfo.coordinates.x) {
-                    this.tileInfo.coordinates.x -= calculateDistanceToMove(delta, this.tileInfo.coordinates.vx);
-                } else {
-                    this.tileInfo.coordinates.x += calculateDistanceToMove(delta, this.tileInfo.coordinates.vx);
+                // droite ou gauche
+                if (this.tileInfo.coordinates.x + this.tileInfo.size.w > collidingObstacle.animation.tileInfo.coordinates.x
+                    || this.tileInfo.coordinates.x < collidingObstacle.animation.tileInfo.coordinates.x + collidingObstacle.animation.tileInfo.size.w) {
+                    this.tileInfo.coordinates.x = oldX;
                 }
                 this.tileInfo.coordinates.vx *= -1;
             }

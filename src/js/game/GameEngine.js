@@ -27,15 +27,32 @@ export default class GameEngine {
         // Game Structure
         this.animate = new Animate(this, this.canvas, this.ctx);
         this.level = new FirstLevel(this.canvas, this.ctx);
+        let playerSize = GameEngine.calculateAspectRatioFit(16, 16, Math.round(this.canvas.width/18), Math.round(this.canvas.height/18));
         this.player = new Player(new TileInfo(this.level.getPlayerStartingPos().x,
             this.level.getPlayerStartingPos().y,
-            20,
-            20,
-            48,
-            48,
+            200,
+            200,
+            playerSize.width,
+            playerSize.height,
             16,
             "idle"));
         GameEngine.instance = this;
+    }
+
+    /**
+     * Conserve aspect ratio of the original region. Useful when shrinking/enlarging
+     * images to fit into a certain area.
+     *
+     * @param {Number} srcWidth width of source image
+     * @param {Number} srcHeight height of source image
+     * @param {Number} maxWidth maximum available width
+     * @param {Number} maxHeight maximum available height
+     * @return {Object} { width, height }
+     */
+    static calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+        let ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+
+        return { width: srcWidth*ratio, height: srcHeight*ratio };
     }
 
     /**

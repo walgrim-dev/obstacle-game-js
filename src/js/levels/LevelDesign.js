@@ -1,5 +1,6 @@
 import Obstacle from "../obstacles/Obstacle.js";
 import TileInfo from "../coordinates/TileInfo.js";
+import GameEngine from "../game/GameEngine.js";
 
 export default class LevelDesign {
     constructor(mapOfElements, canvas, ctx) {
@@ -18,8 +19,8 @@ export default class LevelDesign {
             for (let j = 0; j < this.mapOfElements.length; j++) {
                 if (this.mapOfElements[i][j] === -1) {
                     this.basicPlayerPos = {
-                        x: i * this.tilesWidth,
-                        y: j * this.tilesHeight
+                        x: i * this.tilesWidth+1,
+                        y: j * this.tilesHeight+1
                     }
                 }
                 if (this.mapOfElements[i][j] === 2) {

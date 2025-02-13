@@ -3,6 +3,7 @@ import {rectsOverlap, objectColliding} from "../collisions/checkCollisions.js";
 import GameEngine from "../game/GameEngine.js";
 import Animate from "../animate/Animate.js";
 import ObstacleAnimate from "../animate/elements/ObstacleAnimate.js";
+import calculateDistanceToMove from "../animate/calculateDistanceToMove.js";
 
 export default class Player {
     constructor(tileInfo) {
@@ -26,7 +27,7 @@ export default class Player {
             else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = true;
 
             if (this.moves.up || this.moves.down || this.moves.left || this.moves.right) {
-                this.animation.action = "move";
+                this.animation.tileInfo.state = "move";
                 this.isMoving = true;
             }
         });
@@ -39,63 +40,68 @@ export default class Player {
             else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = false;
 
             if (!this.moves.up && !this.moves.down && !this.moves.left && !this.moves.right) {
-                this.animation.action = "idle";
+                this.animation.tileInfo.state = "idle";
                 this.isMoving = false;
             }
         });
     }
 
-    move = () => {
+    move = (delta) => {
+        const tileInfo = this.animation.tileInfo;
         if (this.isMoving) {
-            // Calcul du déplacement prévu
-            const x = this.animation.tileInfo.coordinates.x;
-            const y = this.animation.tileInfo.coordinates.y;
-            const vx = this.animation.tileInfo.coordinates.vx;
-            const vy = this.animation.tileInfo.coordinates.vy;
-            const w = this.animation.tileInfo.size.w;
-            const h = this.animation.tileInfo.size.h;
+            // Tileinfo
+            if (this.moves.up) tileInfo.coordinates.y -= calculateDistanceToMove(delta, tileInfo.coordinates.vx);
+            if (this.moves.down) tileInfo.coordinates.y += calculateDistanceToMove(delta, tileInfo.coordinates.vy);
+            if (this.moves.left) tileInfo.coordinates.x -= calculateDistanceToMove(delta, tileInfo.coordinates.vx);
+            if (this.moves.right) tileInfo.coordinates.x += calculateDistanceToMove(delta, tileInfo.coordinates.vx);
 
-            /*
-            if (this.moves.up) y -= vy;
-            if (this.moves.down) y += vy;
-            if (this.moves.left) dx -= vx;
-            if (this.moves.right) dx += vx;
+            const collidingObstacle = objectColliding(tileInfo.coordinates.x,
+                tileInfo.coordinates.y,
+                tileInfo.size.w,
+                tileInfo.size.h,
+                GameEngine.getInstance().level.getObstacles());
 
-            // Création d'un nouvel objet de position pour le collider
-            const newPos = {
-                x: x + vx,
-                y: y + vy,
-                w: w,
-                h: h
-            };
-
-            if (!checkCollisions(GameEngine.getInstance().level.getObstacles(), newPos)) {
-                this.animation.updatePos(dx, dy);
-            }
-
-            let obstacle = objectColliding(GameEngine.getInstance().level.getObstacles(), newPos);
-            if (obstacle) {
-                if (obstacle.animation.action === "exitObstacle") {
+            if (collidingObstacle) {
+                if (collidingObstacle.animation.tileInfo.state === "exitObstacle") {
                     // Hotfix
                     Animate.objToAnimate = Animate.objToAnimate.filter(o => o instanceof PlayerAnimate);
                     GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
-                    this.animation.pos = GameEngine.getInstance().level.getPlayerStartingPos();
+                    tileInfo.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                    tileInfo.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
+
                 }
-                if (obstacle.animation.action === "movingObstacle") {
-                    console.log(GameEngine.getInstance().level.basicPlayerPos);
-                    this.animation.test(GameEngine.getInstance().level.basicPlayerPos.x, GameEngine.getInstance().level.basicPlayerPos.y);
+                else if (collidingObstacle.animation.tileInfo.state === "movingObstacle") {
+                    tileInfo.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                    tileInfo.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
+                } else {
+                    if (this.moves.right) {
+                        tileInfo.coordinates.x -= calculateDistanceToMove(delta, tileInfo.coordinates.vx);
+                    }
+                    if (this.moves.left) {
+                        tileInfo.coordinates.x += calculateDistanceToMove(delta, tileInfo.coordinates.vx);
+                    }
+                    if (this.moves.up) {
+                        tileInfo.coordinates.y += calculateDistanceToMove(delta, tileInfo.coordinates.vy);
+                    }
+                    if (this.moves.down) {
+                        tileInfo.coordinates.y -= calculateDistanceToMove(delta, tileInfo.coordinates.vy);
+                    }
                 }
             }
         } else {
             if (GameEngine.getInstance()) {
-                let obstacle = objectColliding(GameEngine.getInstance().level.getObstacles(), this.animation.actualPos());
-                if (obstacle) {
-                    if (obstacle.animation.action === "movingObstacle") {
-                        console.log(GameEngine.getInstance().level.basicPlayerPos);
-                        this.animation.test(GameEngine.getInstance().level.basicPlayerPos.x, GameEngine.getInstance().level.basicPlayerPos.y);
+                const collidingObstacle = objectColliding(tileInfo.coordinates.x,
+                    tileInfo.coordinates.y,
+                    tileInfo.size.w,
+                    tileInfo.size.h,
+                    GameEngine.getInstance().level.getObstacles());
+                if (collidingObstacle) {
+                    if (collidingObstacle.animation.tileInfo.state === "movingObstacle") {
+                        tileInfo.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                        tileInfo.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
                     }
                 }
-            }*/
+            }
         }
     }
 }

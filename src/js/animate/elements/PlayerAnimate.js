@@ -19,7 +19,7 @@ export default class PlayerAnimate {
 
     animate = (ctx, delta) => {
         // Move player
-        this.player.move();
+        this.player.move(delta);
 
         ctx.save();
         let sequence = this.textures.getSequence(this.tileInfo.state);

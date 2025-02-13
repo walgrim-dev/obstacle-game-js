@@ -14,6 +14,9 @@ export default class Animate {
         // en millisecondes mais avec une précision au millième de milliseconde
         // Pour l'animation basée sur le temps, on va calculer le temps écoule
         // entre deux images
+        if (time === undefined) {
+            return;
+        }
         const delta = time - this.lastTime;
 
         // on va utiliser ce delta pour calculer la distance des déplacement de tous les objets
@@ -23,11 +26,11 @@ export default class Animate {
         //console.log(delta);
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+    /*
         if (GameEngine.getInstance() === null) {
             return;
         }
-
+*/
         for (const obj of Animate.objToAnimate) {
             if (!obj.state) continue;
             obj.animate(this.ctx, delta);

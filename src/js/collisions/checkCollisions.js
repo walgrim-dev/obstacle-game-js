@@ -42,4 +42,5 @@ function objectColliding(x1, y1, w1, h1, obstacleList) {
     return null;
 }
 
+
 export { rectsOverlap, objectColliding };
