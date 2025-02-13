@@ -30,8 +30,8 @@ export default class GameEngine {
         let playerSize = GameEngine.calculateAspectRatioFit(16, 16, Math.round(this.canvas.width/18), Math.round(this.canvas.height/18));
         this.player = new Player(new TileInfo(this.level.getPlayerStartingPos().x,
             this.level.getPlayerStartingPos().y,
-            200,
-            200,
+            350,
+            350,
             playerSize.width,
             playerSize.height,
             16,

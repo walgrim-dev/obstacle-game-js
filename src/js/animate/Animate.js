@@ -25,12 +25,18 @@ export default class Animate {
 
         //console.log(delta);
 
+        // simulate low end device
+        /*
+        for (let i = 0; i < 112222000; i++) {
+
+        }*/
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    /*
+
         if (GameEngine.getInstance() === null) {
             return;
         }
-*/
+
         for (const obj of Animate.objToAnimate) {
             if (!obj.state) continue;
             obj.animate(this.ctx, delta);
