@@ -17,7 +17,7 @@ export default class PlayerAnimate {
         this.state = true;
     }
 
-    animate = (ctx) => {
+    animate = (ctx, delta) => {
         // Move player
         this.player.move();
 

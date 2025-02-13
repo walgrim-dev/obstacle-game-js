@@ -1,16 +1,18 @@
 import ObstacleAnimate from '../animate/elements/ObstacleAnimate.js';
 import {objectColliding} from "../collisions/checkCollisions.js";
 import GameEngine from "../game/GameEngine.js";
+import calculateDistanceToMove from "../animate/calculateDistanceToMove.js";
 
 export default class Obstacle {
     constructor(tileInfo) {
         this.animation = new ObstacleAnimate(this, tileInfo);
     }
 
-    move = () => {
+    move = (delta) => {
         const tileInfo = this.animation.tileInfo;
         if (tileInfo.state === "movingObstacle") {
-            tileInfo.coordinates.x += tileInfo.coordinates.vx;
+
+            tileInfo.coordinates.x += calculateDistanceToMove(delta, tileInfo.coordinates.vx);
             /*
             const before = this.animation.tileInfo;
 

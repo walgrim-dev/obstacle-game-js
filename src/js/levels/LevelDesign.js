@@ -32,7 +32,7 @@ export default class LevelDesign {
 
                 if (this.mapOfElements[i][j] === 3) {
                     const tileInfo = new TileInfo(j * this.tilesWidth,
-                        i * this.tilesHeight + (this.tilesHeight * 0.05 / 2), 1, 1, this.tilesWidth, this.tilesHeight*0.95, 16, "movingObstacle");
+                        i * this.tilesHeight + (this.tilesHeight * 0.05 / 2), 200, 100, this.tilesWidth, this.tilesHeight*0.95, 16, "movingObstacle");
                     const movingObstacle = new Obstacle(tileInfo);
                     this.obstacles.push(movingObstacle);
                 }

@@ -6,7 +6,6 @@ export default class Animate {
     constructor(gameEngine, canvas, ctx) {
         this.canvas = canvas;
         this.ctx = ctx;
-        this.gameEngine = gameEngine;
     }
 
     lastTime = 0;
@@ -31,9 +30,13 @@ export default class Animate {
 
         for (const obj of Animate.objToAnimate) {
             if (!obj.state) continue;
-            obj.animate(this.ctx);
+            obj.animate(this.ctx, delta);
         }
-        this.lastTime = time;
+        /*
+        let sequence = texture.textures.get("right");
+        console.log(sequence.getX());
+        this.ctx.drawImage(texture.spriteSheet, sequence.getX(), sequence.getY(), 16, 16, 0, 0, 16, 16);
+         */
         /**
          * Needs to animate :
          * Player moves
@@ -43,10 +46,6 @@ export default class Animate {
          *  - Le joueur est animé en fonction de la séquence
          *  - Pareil pour l'obstacle
          */
-        /*
-        let sequence = texture.textures.get("right");
-        console.log(sequence.getX());
-        this.ctx.drawImage(texture.spriteSheet, sequence.getX(), sequence.getY(), 16, 16, 0, 0, 16, 16);
-         */
+        this.lastTime = time;
     }
 }
