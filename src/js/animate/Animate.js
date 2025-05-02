@@ -9,7 +9,7 @@ export default class Animate {
     }
 
     lastTime = 0;
-    animate(time) {
+    animate(time, offsetX, offsetY) {
         // time c'est le temps écoulé depuis le début de la première exécution de cette fonction
         // en millisecondes mais avec une précision au millième de milliseconde
         // Pour l'animation basée sur le temps, on va calculer le temps écoule
@@ -39,7 +39,7 @@ export default class Animate {
 
         for (const obj of Animate.objToAnimate) {
             if (!obj.state) continue;
-            obj.animate(this.ctx, delta);
+            obj.animate(this.ctx, delta, offsetX, offsetY);
         }
         /*
         let sequence = texture.textures.get("right");

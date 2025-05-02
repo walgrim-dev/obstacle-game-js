@@ -20,9 +20,8 @@ export default class ObstacleAnimate {
         this.state = true;
     }
 
-    animate = (ctx, delta) => {
+    animate = (ctx, delta, offsetX, offsetY) => {
         // Move obstacle (if movingObstacle)
-
 
         /*
         for (let i = 0; i < 1000000; i++) {
@@ -54,7 +53,6 @@ export default class ObstacleAnimate {
                 this.tileInfo.coordinates.vx *= -1;
             }
         }
-
         ctx.save();
         let sequence = this.textures.getSequence(this.tileInfo.state);
         let x = sequence.getX();
@@ -64,8 +62,8 @@ export default class ObstacleAnimate {
             y,
             this.tileInfo.size.cutSize,
             this.tileInfo.size.cutSize,
-            this.tileInfo.coordinates.x,
-            this.tileInfo.coordinates.y,
+            this.tileInfo.coordinates.x - offsetX,
+            this.tileInfo.coordinates.y - offsetY,
             this.tileInfo.size.w,
             this.tileInfo.size.h);
         ctx.restore();

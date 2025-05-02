@@ -1,11 +1,8 @@
+import Coordinates from "./Coordinates.js";
+
 export default class TileInfo {
     constructor(x, y, vx, vy, w, h, cutSize, state) {
-        this.coordinates = {
-            x: x,
-            y: y,
-            vx: vx,
-            vy: vy,
-        }
+        this.coordinates = new Coordinates(x, y, vx, vy);
 
         this.size = {
             w: w,

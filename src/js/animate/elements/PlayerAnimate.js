@@ -17,7 +17,7 @@ export default class PlayerAnimate {
         this.state = true;
     }
 
-    animate = (ctx, delta) => {
+    animate = (ctx, delta, offsetX, offsetY) => {
         // Move player
         this.player.move(delta);
 
@@ -30,8 +30,8 @@ export default class PlayerAnimate {
             y,
             this.tileInfo.size.cutSize,
             this.tileInfo.size.cutSize,
-            this.tileInfo.coordinates.x,
-            this.tileInfo.coordinates.y,
+            this.tileInfo.coordinates.x - offsetX,
+            this.tileInfo.coordinates.y - offsetY,
             this.tileInfo.size.w,
             this.tileInfo.size.h);
         ctx.restore();

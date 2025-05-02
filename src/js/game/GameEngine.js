@@ -2,8 +2,7 @@ import Animate from "../animate/Animate.js";
 import Player from "../characters/Player.js";
 import FirstLevel from "../levels/FirstLevel.js";
 import TileInfo from "../coordinates/TileInfo.js";
-
-const audio = new Audio('music/flower_garden.ogg');
+import OrthogonalCamera from "../camera/OrthogonalCamera.js";
 
 export default class GameEngine {
     static instance = null;
@@ -36,6 +35,7 @@ export default class GameEngine {
             playerSize.height,
             16,
             "idle"));
+        this.camera = new OrthogonalCamera()
         GameEngine.instance = this;
     }
 
@@ -92,7 +92,10 @@ export default class GameEngine {
 
     // GameLoop
     play = (time) => {
-        this.animate.animate(time);
+        // Update orthognal camera
+        this.camera.updateX(this.player.animation.tileInfo.coordinates.x - this.canvas.width / 2);
+        this.camera.updateY(this.player.animation.tileInfo.coordinates.y - this.canvas.height / 2);
+        this.animate.animate(time, this.camera.coordinates.x, this.camera.coordinates.y);
         window.requestAnimationFrame(this.play);
     }
 

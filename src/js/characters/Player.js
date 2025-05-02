@@ -16,6 +16,7 @@ export default class Player {
         };
         this.isMoving = false;
         this.listenToKeys();
+        this.loaded = true
     }
 
     listenToKeys = () => {

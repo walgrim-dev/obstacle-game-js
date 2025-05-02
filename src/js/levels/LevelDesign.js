@@ -9,7 +9,7 @@ export default class LevelDesign {
         this.ctx = ctx;
         this.obstacles = [];
         this.tilesWidth = this.canvas.width / 20;
-        this.tilesHeight = this.canvas.height / 20;
+        this.tilesHeight = this.canvas.width / 20;
         this.basicPlayerPos = null;
         this.parseData();
     }
