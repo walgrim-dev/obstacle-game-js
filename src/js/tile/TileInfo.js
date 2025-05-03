@@ -7,7 +7,7 @@ export default class TileInfo {
         // Infos about the tile
         this.infos = {
             /**
-             * Only need those two values because size will be same for both cutSizeW and size in game
+             * Only need those two values because size will be same for both size in game
              */
             cutSizeW: cutSizeW,
             cutSizeH: cutSizeH,

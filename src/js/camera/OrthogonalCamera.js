@@ -1,4 +1,4 @@
-import Coordinates from "../tiles/coordinates/Coordinates.js";
+import Coordinates from "../tile/coordinates/Coordinates.js";
 
 export default class OrthogonalCamera {
     constructor() {

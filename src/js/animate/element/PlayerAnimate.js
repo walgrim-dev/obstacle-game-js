@@ -1,13 +1,11 @@
-import AnimationSequence from "../AnimationSequence.js";
-import PlayerTextureLoader from "../textures/PlayerTextureLoader.js";
+import AnimationSequence from "../sequence/AnimationSequence.js";
+import PlayerTexture from "../texture/PlayerTexture.js";
 import Animate from "../Animate.js";
 
 export default class PlayerAnimate {
-    constructor(player, tileInfo) {
+    constructor(player) {
         this.player = player;
-        this.textures = new PlayerTextureLoader('img/smw_mario_sheet.png');
-        this.textures.load(this.updateState);
-        this.tileInfo = tileInfo;
+        this.textures = new PlayerTexture('img/smw_mario_sheet.png', this.updateState);
         this.state = false;
         this.delta = 0;
         Animate.objToAnimate.push(this);
@@ -22,18 +20,19 @@ export default class PlayerAnimate {
         this.player.move(delta);
 
         ctx.save();
-        let sequence = this.textures.getSequence(this.tileInfo.state);
+        const sequence = this.textures.getSequence(this.player.action);
         const cutSizeW = sequence.getCutSizeW();
         const cutSizeH = sequence.getCutSizeH();
         let x = sequence.getX();
         let y = sequence.getY();
-        ctx.drawImage(this.textures.spriteSheet,
+        ctx.drawImage(
+            this.textures.spriteSheet,
             x,
             y,
             cutSizeW,
             cutSizeH,
-            this.tileInfo.coordinates.x - offsetX,
-            this.tileInfo.coordinates.y - offsetY,
+            this.player.coordinates.x - offsetX,
+            this.player.coordinates.y - offsetY,
             cutSizeW * 3,
             cutSizeH * 3);
         ctx.restore();

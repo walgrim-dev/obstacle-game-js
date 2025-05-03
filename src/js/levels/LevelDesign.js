@@ -1,6 +1,5 @@
 import Obstacle from "../obstacles/Obstacle.js";
-import TileInfo from "../tiles/FatTile.js";
-import GameEngine from "../game/GameEngine.js";
+import {ActionType} from "../action/Action.js";
 
 export default class LevelDesign {
     constructor(mapOfElements, canvas, ctx) {
@@ -17,12 +16,10 @@ export default class LevelDesign {
     parseData = () => {
         for (let i = 0; i < this.mapOfElements.length; i++) {
             for (let j = 0; j < this.mapOfElements.length; j++) {
-
                 /**
                  * Faire en sorte de prendre l'index du numéro et d'utiliser une map/pour le lier à une classe
                  * créer l'objet correspondant et le mettre dans le tableau des obstacles
                  */
-
                 if (this.mapOfElements[i][j] === -1) {
                     this.basicPlayerPos = {
                         x: i * this.tilesWidth+1,
@@ -30,24 +27,30 @@ export default class LevelDesign {
                     }
                 }
                 if (this.mapOfElements[i][j] === 2) {
-                    const tileInfo = new TileInfo(j * this.tilesWidth,i * this.tilesHeight, 0, 0, this.tilesWidth, this.tilesHeight, "idle");
-                    const obstacle = new Obstacle(tileInfo);
+                    const obstacle = new Obstacle(
+                        j * this.tilesWidth,
+                        i * this.tilesHeight,
+                        0,
+                        0,
+                        ActionType.IDLE);
                     this.obstacles.push(obstacle);
                 }
-
-
                 if (this.mapOfElements[i][j] === 3) {
-                    const tileInfo = new TileInfo(j * this.tilesWidth,
-                        i * this.tilesHeight + (this.tilesHeight * 0.05 / 2), 400, 400, this.tilesWidth, this.tilesHeight*0.95, "movingObstacle");
-                    const movingObstacle = new Obstacle(tileInfo);
+                    const movingObstacle = new Obstacle(
+                        j * this.tilesWidth,
+                        i * this.tilesHeight,
+                        400,
+                        400,
+                        ActionType.MOVE);
                     this.obstacles.push(movingObstacle);
                 }
-
-
                 if (this.mapOfElements[i][j] === 1) {
-                    const tileInfo = new TileInfo(j * this.tilesWidth,
-                        i * this.tilesHeight, 20, 20, this.tilesWidth, this.tilesHeight, "exitObstacle");
-                    const exitObstacle = new Obstacle(tileInfo);
+                    const exitObstacle = new Obstacle(
+                        j * this.tilesWidth,
+                        i * this.tilesHeight,
+                        0,
+                        0,
+                        ActionType.EXIT);
                     this.obstacles.push(exitObstacle);
                 }
             }

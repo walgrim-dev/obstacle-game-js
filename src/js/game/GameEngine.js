@@ -1,8 +1,9 @@
 import Animate from "../animate/Animate.js";
 import Player from "../characters/Player.js";
 import FirstLevel from "../levels/FirstLevel.js";
-import TileInfo from "../tiles/FatTile.js";
+import TileInfo from "../tile/FatTile.js";
 import OrthogonalCamera from "../camera/OrthogonalCamera.js";
+import {ActionType} from "../action/Action.js";
 
 export default class GameEngine {
     static instance = null;
@@ -26,15 +27,12 @@ export default class GameEngine {
         // Game Structure
         this.animate = new Animate(this, this.canvas, this.ctx);
         this.level = new FirstLevel(this.canvas, this.ctx);
-        let playerSize = GameEngine.calculateAspectRatioFit(20, 20, Math.round(this.canvas.width / 20), Math.round(this.canvas.height / 20));
         this.player = new Player(
-            new TileInfo(this.level.getPlayerStartingPos().x,
-                this.level.getPlayerStartingPos().y,
-                350,
-                350,
-                14 * 3,
-                20 * 3,
-                "idle"));
+            this.level.getPlayerStartingPos().x,
+            this.level.getPlayerStartingPos().y,
+            350,
+            350,
+            ActionType.IDLE);
         this.camera = new OrthogonalCamera()
         GameEngine.instance = this;
     }
@@ -92,8 +90,8 @@ export default class GameEngine {
     // GameLoop
     play = (time) => {
         // Update orthognal camera
-        this.camera.updateX(this.player.animation.tileInfo.coordinates.x - this.canvas.width / 2);
-        this.camera.updateY(this.player.animation.tileInfo.coordinates.y - this.canvas.height / 2);
+        this.camera.updateX(this.player.coordinates.x - this.canvas.width / 2);
+        this.camera.updateY(this.player.coordinates.y - this.canvas.height / 2);
         this.animate.animate(time, this.camera.coordinates.x, this.camera.coordinates.y);
         window.requestAnimationFrame(this.play);
     }

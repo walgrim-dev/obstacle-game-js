@@ -1,22 +1,32 @@
-import PlayerAnimate from '../animate/elements/PlayerAnimate.js';
+import PlayerAnimate from '../animate/element/PlayerAnimate.js';
 import {rectsOverlap, objectColliding} from "../collisions/checkCollisions.js";
 import GameEngine from "../game/GameEngine.js";
 import Animate from "../animate/Animate.js";
-import ObstacleAnimate from "../animate/elements/ObstacleAnimate.js";
+import ObstacleAnimate from "../animate/element/ObstacleAnimate.js";
 import calculateDistanceToMove from "../animate/calculateDistanceToMove.js";
+import Coordinates from "../tile/coordinates/Coordinates.js";
+import {ActionType} from "../action/Action.js";
 
 export default class Player {
-    constructor(tileInfo) {
-        this.animation = new PlayerAnimate(this, tileInfo);
+    /**
+     * @param {float} x X coordinate of the player
+     * @param {float} y Y coordinate of the player
+     * @param {float} vx X velocity of the player
+     * @param {float} vy Y velocity of the player
+     * @param {ActionType} action Action of the player
+     */
+    constructor(x, y, vx, vy, action) {
+        this.coordinates = new Coordinates(x, y, vx, vy);
+        this.animation = new PlayerAnimate(this);
         this.moves = {
             up: false,
             down: false,
             left: false,
             right: false
         };
-        this.isMoving = false;
+        this.action = action;
         this.listenToKeys();
-        this.loaded = true
+        //this.loaded = true
     }
 
     listenToKeys = () => {
@@ -28,8 +38,7 @@ export default class Player {
             else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = true;
 
             if (this.moves.up || this.moves.down || this.moves.left || this.moves.right) {
-                this.animation.tileInfo.state = "move";
-                this.isMoving = true;
+                this.action = ActionType.MOVE;
             }
         });
 
@@ -41,65 +50,65 @@ export default class Player {
             else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = false;
 
             if (!this.moves.up && !this.moves.down && !this.moves.left && !this.moves.right) {
-                this.animation.tileInfo.state = "idle";
-                this.isMoving = false;
+                this.action = ActionType.IDLE;
             }
         });
     }
 
     move = (delta) => {
-        const tileInfo = this.animation.tileInfo;
-        if (this.isMoving) {
+        if (this.action === ActionType.MOVE) {
             // Tileinfo
-            if (this.moves.up) tileInfo.coordinates.y -= calculateDistanceToMove(delta, tileInfo.coordinates.vx);
-            if (this.moves.down) tileInfo.coordinates.y += calculateDistanceToMove(delta, tileInfo.coordinates.vy);
-            if (this.moves.left) tileInfo.coordinates.x -= calculateDistanceToMove(delta, tileInfo.coordinates.vx);
-            if (this.moves.right) tileInfo.coordinates.x += calculateDistanceToMove(delta, tileInfo.coordinates.vx);
+            if (this.moves.up) this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vx);
+            if (this.moves.down) this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);
+            if (this.moves.left) this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx);
+            if (this.moves.right) this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
 
-            const collidingObstacle = objectColliding(tileInfo.coordinates.x,
-                tileInfo.coordinates.y,
-                tileInfo.size.w,
-                tileInfo.size.h,
+            const collidingObstacle = objectColliding(
+                this.coordinates.x,
+                this.coordinates.y,
+                this.animation.textures.getSequence(this.action).getCutSizeW(),
+                this.animation.textures.getSequence(this.action).getCutSizeH(),
                 GameEngine.getInstance().level.getObstacles());
 
             if (collidingObstacle) {
-                if (collidingObstacle.animation.tileInfo.state === "exitObstacle") {
+                if (collidingObstacle.action === ActionType.EXIT) {
                     // Hotfix
                     Animate.objToAnimate = Animate.objToAnimate.filter(o => o instanceof PlayerAnimate);
                     GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
-                    tileInfo.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
-                    tileInfo.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
+                    this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                    this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
 
                 }
-                else if (collidingObstacle.animation.tileInfo.state === "movingObstacle") {
-                    tileInfo.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
-                    tileInfo.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
+                else if (collidingObstacle.action === ActionType.MOVE) {
+                    this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                    this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
                 } else {
                     if (this.moves.right) {
-                        tileInfo.coordinates.x -= calculateDistanceToMove(delta, tileInfo.coordinates.vx);
+                        this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx);
                     }
                     if (this.moves.left) {
-                        tileInfo.coordinates.x += calculateDistanceToMove(delta, tileInfo.coordinates.vx);
+                        this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
                     }
                     if (this.moves.up) {
-                        tileInfo.coordinates.y += calculateDistanceToMove(delta, tileInfo.coordinates.vy);
+                        this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);
                     }
                     if (this.moves.down) {
-                        tileInfo.coordinates.y -= calculateDistanceToMove(delta, tileInfo.coordinates.vy);
+                        this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vy);
                     }
                 }
             }
         } else {
             if (GameEngine.getInstance()) {
-                const collidingObstacle = objectColliding(tileInfo.coordinates.x,
-                    tileInfo.coordinates.y,
-                    tileInfo.size.w,
-                    tileInfo.size.h,
+                const collidingObstacle = objectColliding(
+                    this.coordinates.x,
+                    this.coordinates.y,
+                    this.animation.textures.getSequence(this.action).getCutSizeW(),
+                    this.animation.textures.getSequence(this.action).getCutSizeH(),
                     GameEngine.getInstance().level.getObstacles());
                 if (collidingObstacle) {
-                    if (collidingObstacle.animation.tileInfo.state === "movingObstacle") {
-                        tileInfo.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
-                        tileInfo.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
+                    if (collidingObstacle.action === ActionType.MOVE) {
+                        this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                        this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
                     }
                 }
             }

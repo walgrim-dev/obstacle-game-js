@@ -42,7 +42,7 @@ export default class Animate {
             obj.animate(this.ctx, delta, offsetX, offsetY);
         }
         /*
-        let sequence = texture.textures.get("right");
+        let sequence = texture.texture.get("right");
         console.log(sequence.getX());
         this.ctx.drawImage(texture.spriteSheet, sequence.getX(), sequence.getY(), 16, 16, 0, 0, 16, 16);
          */

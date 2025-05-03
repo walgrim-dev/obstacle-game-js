@@ -26,15 +26,15 @@ function rectsOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
  * @param y1
  * @param w1
  * @param h1
- * @param obstacleList
+ * @param {Obstacle[]} obstacleList
  * @returns {Obstacle|null}
  */
 function objectColliding(x1, y1, w1, h1, obstacleList) {
     for (let obstacle of obstacleList) {
-        const x2 = obstacle.animation.tileInfo.coordinates.x;
-        const y2 = obstacle.animation.tileInfo.coordinates.y;
-        const w2 = obstacle.animation.tileInfo.size.w;
-        const h2 = obstacle.animation.tileInfo.size.h;
+        const x2 = obstacle.coordinates.x;
+        const y2 = obstacle.coordinates.y;
+        const w2 = obstacle.animation.textures.getSequence(obstacle.action).getCutSizeW();
+        const h2 = obstacle.animation.textures.getSequence(obstacle.action).getCutSizeH();
         if (rectsOverlap(x1, y1, w1, h1, x2, y2, w2, h2)) {
             return obstacle;
         }
