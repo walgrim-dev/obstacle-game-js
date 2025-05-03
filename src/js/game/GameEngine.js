@@ -1,7 +1,7 @@
 import Animate from "../animate/Animate.js";
 import Player from "../characters/Player.js";
 import FirstLevel from "../levels/FirstLevel.js";
-import TileInfo from "../coordinates/TileInfo.js";
+import TileInfo from "../tiles/FatTile.js";
 import OrthogonalCamera from "../camera/OrthogonalCamera.js";
 
 export default class GameEngine {
@@ -26,15 +26,15 @@ export default class GameEngine {
         // Game Structure
         this.animate = new Animate(this, this.canvas, this.ctx);
         this.level = new FirstLevel(this.canvas, this.ctx);
-        let playerSize = GameEngine.calculateAspectRatioFit(16, 16, Math.round(this.canvas.width/18), Math.round(this.canvas.height/18));
-        this.player = new Player(new TileInfo(this.level.getPlayerStartingPos().x,
-            this.level.getPlayerStartingPos().y,
-            350,
-            350,
-            playerSize.width,
-            playerSize.height,
-            16,
-            "idle"));
+        let playerSize = GameEngine.calculateAspectRatioFit(20, 20, Math.round(this.canvas.width / 20), Math.round(this.canvas.height / 20));
+        this.player = new Player(
+            new TileInfo(this.level.getPlayerStartingPos().x,
+                this.level.getPlayerStartingPos().y,
+                350,
+                350,
+                14 * 3,
+                20 * 3,
+                "idle"));
         this.camera = new OrthogonalCamera()
         GameEngine.instance = this;
     }
@@ -51,8 +51,7 @@ export default class GameEngine {
      */
     static calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
         let ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-
-        return { width: srcWidth*ratio, height: srcHeight*ratio };
+        return {width: srcWidth * ratio, height: srcHeight * ratio};
     }
 
     /**

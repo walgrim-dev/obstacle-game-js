@@ -5,7 +5,7 @@ import Animate from "../Animate.js";
 export default class PlayerAnimate {
     constructor(player, tileInfo) {
         this.player = player;
-        this.textures = new PlayerTextureLoader('img/sprites.png');
+        this.textures = new PlayerTextureLoader('img/smw_mario_sheet.png');
         this.textures.load(this.updateState);
         this.tileInfo = tileInfo;
         this.state = false;
@@ -23,17 +23,19 @@ export default class PlayerAnimate {
 
         ctx.save();
         let sequence = this.textures.getSequence(this.tileInfo.state);
+        const cutSizeW = sequence.getCutSizeW();
+        const cutSizeH = sequence.getCutSizeH();
         let x = sequence.getX();
         let y = sequence.getY();
         ctx.drawImage(this.textures.spriteSheet,
             x,
             y,
-            this.tileInfo.size.cutSize,
-            this.tileInfo.size.cutSize,
+            cutSizeW,
+            cutSizeH,
             this.tileInfo.coordinates.x - offsetX,
             this.tileInfo.coordinates.y - offsetY,
-            this.tileInfo.size.w,
-            this.tileInfo.size.h);
+            cutSizeW * 3,
+            cutSizeH * 3);
         ctx.restore();
         if (this.delta === 15) {
             sequence.nextFrame();

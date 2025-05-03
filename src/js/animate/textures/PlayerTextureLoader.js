@@ -22,9 +22,10 @@ export default class PlayerTextureLoader {
         return this.textures.get(action);
     }
 
+    // x, y, cutsizeW, cutsizeH
     idle = () => {
         return [
-            [0, 88],
+            [129, 0, 14, 20],
         ]
     }
 
@@ -33,9 +34,10 @@ export default class PlayerTextureLoader {
      */
     move = () => {
         return [
-            [16, 88],
-            [32, 88],
-            [48, 88],
+            [64, 0, 60, 64],
+            [128, 32, 52, 60],
+            [48, 88, 16, 16],
+            [0, 124, 44, 64]
         ]
     }
 }

@@ -23,4 +23,12 @@ export default class AnimationSequence {
     getY = () => {
         return this.sequence[this.currentFrame][1];
     }
+
+    getCutSizeW = () => {
+        return this.sequence[this.currentFrame][2];
+    }
+
+    getCutSizeH = () => {
+        return this.sequence[this.currentFrame][3];
+    }
 }
