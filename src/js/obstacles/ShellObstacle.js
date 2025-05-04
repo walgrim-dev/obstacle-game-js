@@ -20,9 +20,7 @@ export default class ShellObstacle extends DefaultObstacle {
         this.animation = new ShellAnimate(this);
     }
 
-    move = (delta) => {
-        if (this.action === ActionType.MOVE) {
-            this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
-        }
+    move(delta) {
+        super.move(delta);
     }
 }

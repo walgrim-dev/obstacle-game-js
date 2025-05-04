@@ -31,7 +31,7 @@ export default class Player {
         //this.loaded = true
     }
 
-    listenToKeys = () => {
+    listenToKeys() {
         addEventListener('keydown', (ev) => {
             ev.preventDefault();
             if (ev.key === 'z' || ev.key === 'Z' || ev.key === 'ArrowUp') this.moves.up = true;
@@ -39,17 +39,15 @@ export default class Player {
             else if (ev.key === 's' || ev.key === 'S' || ev.key === 'ArrowDown') this.moves.down = true;
             else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = true;
 
-            //if (this.moves.up || this.moves.down || this.moves.left || this.moves.right) {
-            if (this.moves.right || this.moves.up && this.moves.right || this.moves.down && this.moves.right) {
+            if (this.moves.right) {
                 this.action = ActionType.MOVE_RIGHT;
             }
-            else if (this.moves.left || this.moves.up && this.moves.left || this.moves.down && this.moves.left) {
+            if (this.moves.left) {
                 this.action = ActionType.MOVE_LEFT;
             }
-            else {
+            if (this.moves.up || this.moves.down) {
                 this.action = ActionType.MOVE_RIGHT;
             }
-
         });
 
         addEventListener('keyup', (ev) => {
@@ -65,11 +63,15 @@ export default class Player {
         });
     }
 
-    move = (delta) => {
-        if (this.action === ActionType.MOVE_LEFT
+    isMoving() {
+        return (this.action === ActionType.MOVE_LEFT
             || this.action === ActionType.MOVE_RIGHT
             || this.action === ActionType.MOVE_UP
-            || this.action === ActionType.MOVE_DOWN) {
+            || this.action === ActionType.MOVE_DOWN);
+    }
+
+    move(delta) {
+        if (this.isMoving()) {
             // Tileinfo
             if (this.moves.up) this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vx);
             if (this.moves.down) this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);

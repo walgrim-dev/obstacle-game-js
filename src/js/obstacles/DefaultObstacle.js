@@ -19,7 +19,7 @@ export default class DefaultObstacle {
         this.size = size;
     }
 
-    move = (delta) => {
+    move(delta) {
         if (this.action === ActionType.MOVE) {
             this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
         }

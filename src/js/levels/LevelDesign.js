@@ -22,8 +22,8 @@ export default class LevelDesign {
                  */
                 if (this.mapOfElements[i][j] === -1) {
                     this.basicPlayerPos = {
-                        x: i * 64 + 1,
-                        y: j * 64 + 1
+                        x: i * ScaleFactor.TILE_SIZE + 1,
+                        y: j * ScaleFactor.TILE_SIZE + 1
                     }
                 }
                 if (this.mapOfElements[i][j] === 2) {

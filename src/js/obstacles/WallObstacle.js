@@ -16,9 +16,7 @@ export default class WallObstacle extends DefaultObstacle {
         this.animation = new WallAnimate(this);
     }
 
-    move = (delta) => {
-        if (this.action === ActionType.MOVE) {
-            this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
-        }
+    move(delta) {
+        super.move(delta);
     }
 }

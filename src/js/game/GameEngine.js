@@ -4,6 +4,7 @@ import FirstLevel from "../levels/FirstLevel.js";
 import TileInfo from "../tile/FatTile.js";
 import OrthogonalCamera from "../camera/OrthogonalCamera.js";
 import {ActionType} from "../action/Action.js";
+import {ScaleFactor} from "../scale/ScaleFactor.js";
 
 export default class GameEngine {
     static instance = null;
@@ -75,8 +76,8 @@ export default class GameEngine {
     // GameLoop
     play = (time) => {
         // Update orthognal camera
-        this.camera.updateX(this.player.coordinates.x - this.canvas.width / 2);
-        this.camera.updateY(this.player.coordinates.y - this.canvas.height / 2);
+        this.camera.updateX((this.player.coordinates.x + (this.player.size / 2)) - this.canvas.width / 2);
+        this.camera.updateY((this.player.coordinates.y + (this.player.size / 2)) - this.canvas.height / 2);
         this.animate.animate(time, this.camera.coordinates.x, this.camera.coordinates.y);
         window.requestAnimationFrame(this.play);
     }
