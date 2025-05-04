@@ -7,6 +7,8 @@ import calculateDistanceToMove from "../animate/calculateDistanceToMove.js";
 import Coordinates from "../tile/coordinates/Coordinates.js";
 import {ActionType} from "../action/Action.js";
 import {ScaleFactor} from "../scale/ScaleFactor.js";
+import ExitObstacle from "../obstacles/ExitObstacle.js";
+import ShellObstacle from "../obstacles/ShellObstacle.js";
 
 export default class Player {
     /**
@@ -76,6 +78,22 @@ export default class Player {
         return (this.moves.up || this.moves.down || this.moves.left || this.moves.right);
     }
 
+    checkSpecialObstacle(collidingObstacle) {
+        if (collidingObstacle) {
+            if (collidingObstacle instanceof ExitObstacle) {
+                // Hotfix
+                Animate.objToAnimate = Animate.objToAnimate.filter(o => o instanceof PlayerAnimate);
+                GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
+                this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
+            }
+            if (collidingObstacle instanceof ShellObstacle) {
+                this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
+            }
+        }
+    }
+
     /**
      * @returns {DefaultObstacle|null} obstacle
      */
@@ -89,50 +107,41 @@ export default class Player {
     }
 
     move(delta) {
-        if (!GameEngine.getInstance()) return;
         if (this.isMoving()) {
             // Tileinfo
-            const collidingObstacle = this.isColliding();
-            if (collidingObstacle) {
-                if (collidingObstacle.action === ActionType.EXIT) {
-                    // Hotfix
-                    Animate.objToAnimate = Animate.objToAnimate.filter(o => o instanceof PlayerAnimate);
-                    GameEngine.getInstance().updateLevel(GameEngine.getInstance().level.nextLevel());
-                    this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
-                    this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
-
-                }
-                else if (collidingObstacle.action === ActionType.MOVE) {
-                    this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
-                    this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
-                }
-            }
             if (this.moves.up) {
                 const speedFactor = (this.moves.right || this.moves.left) ? 0.7 : 1;
                 this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vy * speedFactor);
-                if (this.isColliding()) {
+                const collidingObstacle = this.isColliding();
+                this.checkSpecialObstacle(collidingObstacle);
+                if (collidingObstacle) {
                     this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy * speedFactor);
                 }
             }
             if (this.moves.down) {
                 const speedFactor = (this.moves.right || this.moves.left) ? 0.7 : 1;
                 this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy * speedFactor);
-                if (this.isColliding()) {
+                const collidingObstacle = this.isColliding();
+                this.checkSpecialObstacle(collidingObstacle);
+                if (collidingObstacle) {
                     this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vy * speedFactor);
                 }
             }
             if (this.moves.left) {
                 const speedFactor = (this.moves.up || this.moves.down) ? 0.7 : 1;
                 this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx * speedFactor);
-                if (this.isColliding()) {
+                const collidingObstacle = this.isColliding();
+                this.checkSpecialObstacle(collidingObstacle);
+                if (collidingObstacle) {
                     this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx * speedFactor);
                 }
             }
-
             if (this.moves.right) {
                 const speedFactor = (this.moves.up || this.moves.down) ? 0.7 : 1;
                 this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx * speedFactor);
-                if (this.isColliding()) {
+                const collidingObstacle = this.isColliding();
+                this.checkSpecialObstacle(collidingObstacle);
+                if (collidingObstacle) {
                     this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx * speedFactor);
                 }
             }

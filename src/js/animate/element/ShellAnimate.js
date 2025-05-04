@@ -80,7 +80,6 @@ export default class ShellAnimate {
             this.obstacle.size,
             this.obstacle.size);
         ctx.restore();
-        sequence.nextFrame();
         if (this.delta === 30) {
             sequence.nextFrame();
             this.delta = 0;

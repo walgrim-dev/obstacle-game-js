@@ -2,6 +2,7 @@ import {ActionType} from "../action/Action.js";
 import {ScaleFactor} from "../scale/ScaleFactor.js";
 import ShellObstacle from "../obstacles/ShellObstacle.js";
 import WallObstacle from "../obstacles/WallObstacle.js";
+import ExitObstacle from "../obstacles/ExitObstacle.js";
 
 export default class LevelDesign {
     constructor(mapOfElements, canvas, ctx) {
@@ -45,7 +46,7 @@ export default class LevelDesign {
                     this.obstacles.push(movingObstacle);
                 }
                 if (this.mapOfElements[i][j] === 1) {
-                    const exitObstacle = new WallObstacle(
+                    const exitObstacle = new ExitObstacle(
                         j,
                         i,
                         0,

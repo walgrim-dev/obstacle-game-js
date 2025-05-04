@@ -1,6 +1,3 @@
-import WallAnimate from '../animate/element/WallAnimate.js';
-import calculateDistanceToMove from "../animate/calculateDistanceToMove.js";
-import Coordinates from "../tile/coordinates/Coordinates.js";
 import {ActionType} from "../action/Action.js";
 import {ScaleFactor} from "../scale/ScaleFactor.js";
 import DefaultObstacle from "./DefaultObstacle.js";
