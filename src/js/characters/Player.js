@@ -34,18 +34,20 @@ export default class Player {
     listenToKeys() {
         addEventListener('keydown', (ev) => {
             ev.preventDefault();
-            if (ev.key === 'z' || ev.key === 'Z' || ev.key === 'ArrowUp') this.moves.up = true;
-            else if (ev.key === 'q' || ev.key === 'Q' || ev.key === 'ArrowLeft') this.moves.left = true;
-            else if (ev.key === 's' || ev.key === 'S' || ev.key === 'ArrowDown') this.moves.down = true;
-            else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = true;
-
-            if (this.moves.right) {
+            if (ev.key === 'z' || ev.key === 'Z' || ev.key === 'ArrowUp') {
+                this.moves.up = true;
                 this.action = ActionType.MOVE_RIGHT;
             }
-            if (this.moves.left) {
+            else if (ev.key === 'q' || ev.key === 'Q' || ev.key === 'ArrowLeft') {
+                this.moves.left = true;
                 this.action = ActionType.MOVE_LEFT;
             }
-            if (this.moves.up || this.moves.down) {
+            else if (ev.key === 's' || ev.key === 'S' || ev.key === 'ArrowDown') {
+                this.moves.down = true;
+                this.action = ActionType.MOVE_RIGHT;
+            }
+            else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') {
+                this.moves.right = true;
                 this.action = ActionType.MOVE_RIGHT;
             }
         });
@@ -57,34 +59,37 @@ export default class Player {
             else if (ev.key === 's' || ev.key === 'S' || ev.key === 'ArrowDown') this.moves.down = false;
             else if (ev.key === 'd' || ev.key === 'D' || ev.key === 'ArrowRight') this.moves.right = false;
 
-            if (!this.moves.up && !this.moves.down && !this.moves.left && !this.moves.right) {
-                this.action = ActionType.IDLE;
-            }
+            // Détermine l'action en fonction des touches encore pressées
+            if (this.moves.right) this.action = ActionType.MOVE_RIGHT;
+            else if (this.moves.left) this.action = ActionType.MOVE_LEFT;
+            else if (this.moves.up || this.moves.down) this.action = ActionType.MOVE_RIGHT;
+            else this.action = ActionType.IDLE;
         });
     }
 
+    /**
+     * @returns {boolean}
+     */
     isMoving() {
-        return (this.action === ActionType.MOVE_LEFT
-            || this.action === ActionType.MOVE_RIGHT
-            || this.action === ActionType.MOVE_UP
-            || this.action === ActionType.MOVE_DOWN);
+        return (this.moves.up || this.moves.down || this.moves.left || this.moves.right);
+    }
+
+    /**
+     * @returns {DefaultObstacle|null} obstacle
+     */
+    isColliding() {
+        return objectColliding(
+            this.coordinates.x,
+            this.coordinates.y,
+            this.size,
+            this.size,
+            GameEngine.getInstance().level.getObstacles());
     }
 
     move(delta) {
         if (this.isMoving()) {
             // Tileinfo
-            if (this.moves.up) this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vx);
-            if (this.moves.down) this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);
-            if (this.moves.left) this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx);
-            if (this.moves.right) this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
-
-            const collidingObstacle = objectColliding(
-                this.coordinates.x,
-                this.coordinates.y,
-                this.size,
-                this.size,
-                GameEngine.getInstance().level.getObstacles());
-
+            const collidingObstacle = this.isColliding();
             if (collidingObstacle) {
                 if (collidingObstacle.action === ActionType.EXIT) {
                     // Hotfix
@@ -97,34 +102,41 @@ export default class Player {
                 else if (collidingObstacle.action === ActionType.MOVE) {
                     this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
                     this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
-                } else {
-                    if (this.moves.right) {
-                        this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx);
-                    }
-                    if (this.moves.left) {
-                        this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
-                    }
-                    if (this.moves.up) {
-                        this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);
-                    }
-                    if (this.moves.down) {
-                        this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vy);
-                    }
                 }
             }
-        } else {
-            if (GameEngine.getInstance()) {
-                const collidingObstacle = objectColliding(
-                    this.coordinates.x,
-                    this.coordinates.y,
-                    this.size,
-                    this.size,
-                    GameEngine.getInstance().level.getObstacles());
-                if (collidingObstacle) {
-                    if (collidingObstacle.action === ActionType.MOVE) {
-                        this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
-                        this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
-                    }
+
+            if (this.moves.up) {
+                this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vx);
+                if (this.isColliding()) {
+                    this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);
+                }
+            }
+            if (this.moves.down) {
+                this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);
+                if (this.isColliding()) {
+                    this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vy);
+                }
+            }
+            if (this.moves.left) {
+                this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx);
+                if (this.isColliding()) {
+                    this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
+                }
+            }
+            if (this.moves.right) {
+                this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
+                if (this.isColliding()) {
+                    this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx);
+                }
+            }
+        }
+        else {
+            if (!GameEngine.getInstance()) return;
+            const collidingObstacle = this.isColliding();
+            if (collidingObstacle) {
+                if (collidingObstacle.action === ActionType.MOVE) {
+                    this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                    this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
                 }
             }
         }

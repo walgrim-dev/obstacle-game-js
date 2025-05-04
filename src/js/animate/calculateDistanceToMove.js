@@ -1,3 +1,3 @@
 export default function calculateDistanceToMove(delta, speed) {
-    return (speed * delta) / 1000;
+    return (delta * speed) / 1000;
 }
