@@ -1,6 +1,9 @@
 export const ActionType = {
+    MOVE_RIGHT: "moveRight",
+    MOVE_LEFT: "moveLeft",
+    MOVE_UP: "moveUp",
+    MOVE_DOWN: "moveDown",
     MOVE: "move",
-    ATTACK: "attack",
     IDLE: "idle",
     EXIT: "exit"
 }

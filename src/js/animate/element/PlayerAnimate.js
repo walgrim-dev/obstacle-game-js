@@ -1,6 +1,7 @@
 import AnimationSequence from "../sequence/AnimationSequence.js";
 import PlayerTexture from "../texture/PlayerTexture.js";
 import Animate from "../Animate.js";
+import {ScaleFactor} from "../../scale/ScaleFactor.js";
 
 export default class PlayerAnimate {
     constructor(player) {
@@ -33,8 +34,8 @@ export default class PlayerAnimate {
             cutSizeH,
             this.player.coordinates.x - offsetX,
             this.player.coordinates.y - offsetY,
-            cutSizeW * 3,
-            cutSizeH * 3);
+            this.player.size,
+            this.player.size);
         ctx.restore();
         if (this.delta === 15) {
             sequence.nextFrame();

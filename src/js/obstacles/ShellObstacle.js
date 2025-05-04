@@ -1,10 +1,12 @@
-import ObstacleAnimate from '../animate/element/ObstacleAnimate.js';
+import WallAnimate from '../animate/element/WallAnimate.js';
 import calculateDistanceToMove from "../animate/calculateDistanceToMove.js";
-import FatTile from "../tile/FatTile.js";
 import Coordinates from "../tile/coordinates/Coordinates.js";
 import {ActionType} from "../action/Action.js";
+import {ScaleFactor} from "../scale/ScaleFactor.js";
+import DefaultObstacle from "./DefaultObstacle.js";
+import ShellAnimate from "../animate/element/ShellAnimate.js";
 
-export default class Obstacle {
+export default class ShellObstacle extends DefaultObstacle {
     /**
      * @param {float} x X coordinate of the obstacle
      * @param {float} y Y coordinate of the obstacle
@@ -12,10 +14,10 @@ export default class Obstacle {
      * @param {float} vy Y velocity of the obstacle
      * @param {ActionType} action Action of the obstacle
      */
+
     constructor(x, y, vx, vy, action) {
-        this.coordinates = new Coordinates(x, y, vx, vy);
-        this.animation = new ObstacleAnimate(this);
-        this.action = action;
+        super(x, y, vx, vy, action, ScaleFactor.SHELL_SIZE);
+        this.animation = new ShellAnimate(this);
     }
 
     move = (delta) => {

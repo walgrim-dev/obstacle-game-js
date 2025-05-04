@@ -1,5 +1,7 @@
-import Obstacle from "../obstacles/Obstacle.js";
 import {ActionType} from "../action/Action.js";
+import {ScaleFactor} from "../scale/ScaleFactor.js";
+import ShellObstacle from "../obstacles/ShellObstacle.js";
+import WallObstacle from "../obstacles/WallObstacle.js";
 
 export default class LevelDesign {
     constructor(mapOfElements, canvas, ctx) {
@@ -7,8 +9,6 @@ export default class LevelDesign {
         this.canvas = canvas;
         this.ctx = ctx;
         this.obstacles = [];
-        this.tilesWidth = this.canvas.width / 20;
-        this.tilesHeight = this.canvas.width / 20;
         this.basicPlayerPos = null;
         this.parseData();
     }
@@ -22,35 +22,35 @@ export default class LevelDesign {
                  */
                 if (this.mapOfElements[i][j] === -1) {
                     this.basicPlayerPos = {
-                        x: i * this.tilesWidth+1,
-                        y: j * this.tilesHeight+1
+                        x: i * 64 + 1,
+                        y: j * 64 + 1
                     }
                 }
                 if (this.mapOfElements[i][j] === 2) {
-                    const obstacle = new Obstacle(
-                        j * this.tilesWidth,
-                        i * this.tilesHeight,
+                    const obstacle = new WallObstacle(
+                        j,
+                        i,
                         0,
                         0,
                         ActionType.IDLE);
                     this.obstacles.push(obstacle);
                 }
                 if (this.mapOfElements[i][j] === 3) {
-                    const movingObstacle = new Obstacle(
-                        j * this.tilesWidth,
-                        i * this.tilesHeight,
+                    const movingObstacle = new ShellObstacle(
+                        j,
+                        i,
                         400,
                         400,
                         ActionType.MOVE);
                     this.obstacles.push(movingObstacle);
                 }
                 if (this.mapOfElements[i][j] === 1) {
-                    const exitObstacle = new Obstacle(
-                        j * this.tilesWidth,
-                        i * this.tilesHeight,
+                    const exitObstacle = new WallObstacle(
+                        j,
+                        i,
                         0,
                         0,
-                        ActionType.EXIT);
+                        ActionType.IDLE);
                     this.obstacles.push(exitObstacle);
                 }
             }

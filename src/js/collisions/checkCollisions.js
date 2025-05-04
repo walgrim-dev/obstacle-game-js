@@ -11,6 +11,7 @@
  * @param h2
  * @returns {boolean}
  */
+import {ScaleFactor} from "../scale/ScaleFactor.js";
 
 function rectsOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
     if ((x1 > (x2 + w2)) || ((x1 + w1) < x2))
@@ -26,16 +27,14 @@ function rectsOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
  * @param y1
  * @param w1
  * @param h1
- * @param {Obstacle[]} obstacleList
- * @returns {Obstacle|null}
+ * @param {DefaultObstacle[]} obstacleList
+ * @returns {DefaultObstacle|null}
  */
 function objectColliding(x1, y1, w1, h1, obstacleList) {
     for (let obstacle of obstacleList) {
         const x2 = obstacle.coordinates.x;
         const y2 = obstacle.coordinates.y;
-        const w2 = obstacle.animation.textures.getSequence(obstacle.action).getCutSizeW();
-        const h2 = obstacle.animation.textures.getSequence(obstacle.action).getCutSizeH();
-        if (rectsOverlap(x1, y1, w1, h1, x2, y2, w2, h2)) {
+        if (rectsOverlap(x1, y1, w1, h1, x2, y2, obstacle.size, obstacle.size)) {
             return obstacle;
         }
     }

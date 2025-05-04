@@ -20,6 +20,14 @@ export default class AnimationSequence {
     }
 
     /**
+     * Get the sequence of the animation
+     * @returns {FatTile}
+     */
+    getFatTile = () => {
+        return this.sequence;
+    }
+
+    /**
      * Get the current frame of the animation
      * @returns {number}
      */

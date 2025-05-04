@@ -3,7 +3,7 @@ import TileInfo from "../../tile/TileInfo.js";
 import FatTile from "../../tile/FatTile.js";
 import {ActionType} from "../../action/Action.js";
 
-export default class PlayerTexture {
+export default class WallTexture {
     constructor(path, callFunc) {
         this.path = path;
         this.spriteSheet = new Image();
@@ -13,15 +13,13 @@ export default class PlayerTexture {
 
     load(cb) {
         this.spriteSheet.onload = () => {
+            // Load sequences for each movements of the element
             this.textures.set(ActionType.IDLE, new AnimationSequence(this.idleTexture()));
-            this.textures.set(ActionType.MOVE_RIGHT, new AnimationSequence(this.moveRightTexture()));
-            this.textures.set(ActionType.MOVE_LEFT, new AnimationSequence(this.moveLeftTexture()));
             // Callback to say that everything is loaded now
             setTimeout(cb);
         }
         this.spriteSheet.src = this.path;
     }
-
 
     /**
      *
@@ -36,28 +34,6 @@ export default class PlayerTexture {
      * @returns {FatTile}
      */
     idleTexture = () => {
-        return new FatTile([
-            new TileInfo(129, 0, 20, 20)
-        ]);
-    }
-
-    /**
-     * @returns {FatTile}
-     */
-    moveRightTexture = () => {
-        return new FatTile([
-            new TileInfo(328, 0, 19, 20),
-            new TileInfo(208, 0, 19, 20),
-        ]);
-    }
-
-    /**
-     * @returns {FatTile}
-     */
-    moveLeftTexture = () => {
-        return new FatTile([
-            new TileInfo(169, 0, 19, 20),
-            new TileInfo(49, 0, 19, 20),
-        ]);
+        return new FatTile([new TileInfo(0, 0, 64, 64)]);
     }
 }
