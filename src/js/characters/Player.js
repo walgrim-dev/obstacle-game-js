@@ -32,6 +32,8 @@ export default class Player {
     }
 
     listenToKeys() {
+        // il faut penser au fait que c'est asynchrone donc pas le temps d'attendre
+        // les booleans
         addEventListener('keydown', (ev) => {
             ev.preventDefault();
             if (ev.key === 'z' || ev.key === 'Z' || ev.key === 'ArrowUp') {
@@ -87,6 +89,7 @@ export default class Player {
     }
 
     move(delta) {
+        if (!GameEngine.getInstance()) return;
         if (this.isMoving()) {
             // Tileinfo
             const collidingObstacle = this.isColliding();
@@ -104,40 +107,42 @@ export default class Player {
                     this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
                 }
             }
-
             if (this.moves.up) {
-                this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vx);
+                const speedFactor = (this.moves.right || this.moves.left) ? 0.7 : 1;
+                this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vy * speedFactor);
                 if (this.isColliding()) {
-                    this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);
+                    this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy * speedFactor);
                 }
             }
             if (this.moves.down) {
-                this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy);
+                const speedFactor = (this.moves.right || this.moves.left) ? 0.7 : 1;
+                this.coordinates.y += calculateDistanceToMove(delta, this.coordinates.vy * speedFactor);
                 if (this.isColliding()) {
-                    this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vy);
+                    this.coordinates.y -= calculateDistanceToMove(delta, this.coordinates.vy * speedFactor);
                 }
             }
             if (this.moves.left) {
-                this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx);
+                const speedFactor = (this.moves.up || this.moves.down) ? 0.7 : 1;
+                this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx * speedFactor);
                 if (this.isColliding()) {
-                    this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
+                    this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx * speedFactor);
                 }
             }
+
             if (this.moves.right) {
-                this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx);
+                const speedFactor = (this.moves.up || this.moves.down) ? 0.7 : 1;
+                this.coordinates.x += calculateDistanceToMove(delta, this.coordinates.vx * speedFactor);
                 if (this.isColliding()) {
-                    this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx);
+                    this.coordinates.x -= calculateDistanceToMove(delta, this.coordinates.vx * speedFactor);
                 }
             }
+            return;
         }
-        else {
-            if (!GameEngine.getInstance()) return;
-            const collidingObstacle = this.isColliding();
-            if (collidingObstacle) {
-                if (collidingObstacle.action === ActionType.MOVE) {
-                    this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
-                    this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
-                }
+        const collidingObstacle = this.isColliding();
+        if (collidingObstacle) {
+            if (collidingObstacle.action === ActionType.MOVE) {
+                this.coordinates.x = GameEngine.getInstance().level.basicPlayerPos.x;
+                this.coordinates.y = GameEngine.getInstance().level.basicPlayerPos.y;
             }
         }
     }
