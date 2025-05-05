@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Obstacle game : theme Mario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            overflow: hidden;
+            background-image: url("/img/background/background.png");
+            background-size: cover;
+            background-position: center;
+            font-family: 'Press Start 2P', cursive;
+        }
+    </style>
+</head>
+<body>
+<div id="menu" class="flex flex-col items-center justify-center min-h-screen">
+    <div class="bg-black/70 backdrop-blur-sm p-8 rounded-xl shadow-2xl max-w-md w-full">
+        <h1 class="text-center text-yellow-300 text-3xl mb-8">Super Mario</h1>
+
+        <div class="flex flex-col gap-6">
+            <!-- Bouton Solo style Mario -->
+            <button id="singlePlayerBtn"
+                    class="relative overflow-hidden bg-red-600 hover:bg-red-700 active:bg-red-800 text-white py-4 px-8 rounded-xl shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:translate-y-0 border-b-4 border-red-900 flex items-center justify-center">
+                <div class="absolute inset-0 opacity-30 bg-gradient-to-r from-red-400 to-red-600 bg-[length:200%_100%] animate-pulse"></div>
+                <div class="absolute -left-10 w-24 h-full bg-white opacity-20 transform skew-x-12 transition-transform duration-700 group-hover:translate-x-60"></div>
+                <div class="w-8 h-8 mr-3 rounded-full bg-red-500 border-2 border-white ring-2 ring-red-800 flex items-center justify-center">
+                    M
+                </div>
+                <span class="text-lg relative z-10">Solo</span>
+            </button>
+
+            <!-- Bouton Multijoueur style Mario -->
+            <button id="multiPlayerBtn"
+                    class="relative overflow-hidden bg-green-600 hover:bg-green-700 active:bg-green-800 text-white py-4 px-8 rounded-xl shadow-lg transition-all duration-200 transform hover:-translate-y-1 active:translate-y-0 border-b-4 border-green-900 flex items-center justify-center">
+                <div class="absolute inset-0 opacity-30 bg-gradient-to-r from-green-400 to-green-600 bg-[length:200%_100%] animate-pulse"></div>
+                <div class="absolute -left-10 w-24 h-full bg-white opacity-20 transform skew-x-12 transition-transform duration-700 group-hover:translate-x-60"></div>
+                <div class="w-8 h-8 mr-3 rounded-full bg-green-500 border-2 border-white ring-2 ring-green-800 flex items-center justify-center">
+                    L
+                </div>
+                <span class="text-lg relative z-10">Multijoueur</span>
+            </button>
+        </div>
+    </div>
+</div>
+<canvas id="gameCanvas"></canvas>
+<script type="module">
+    import {execSingle} from './singleplayer/singleplayer.js';
+
+    document.getElementById('singlePlayerBtn').addEventListener('click', () => {
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('gameCanvas').style.display = 'block';
+        execSingle();
+    });
+
+    document.getElementById('multiPlayerBtn').addEventListener('click', () => {
+        window.location.href = 'multiplayer/index.html';
+    });
+</script>
+</body>
+</html>

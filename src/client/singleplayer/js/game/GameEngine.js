@@ -1,0 +1,89 @@
+import Animate from "../animate/Animate.js";
+import Player from "../characters/Player.js";
+import FirstLevel from "../levels/FirstLevel.js";
+import TileInfo from "../tile/FatTile.js";
+import OrthogonalCamera from "../camera/OrthogonalCamera.js";
+import {ActionType} from "../action/Action.js";
+import {ScaleFactor} from "../scale/ScaleFactor.js";
+
+export default class GameEngine {
+    static instance = null;
+
+    /**
+     * Class constructor
+     * @param canvasName
+     * @returns {GameEngine}
+     */
+    constructor(canvasName) {
+        if (GameEngine.instance) {
+            return GameEngine.instance;
+        }
+
+        // Get canvas
+        this.canvas = document.querySelector(canvasName);
+        this.ctx = this.canvas.getContext('2d');
+        // Resize canvas
+        this.resize();
+
+        // Game Structure
+        this.animate = new Animate(this, this.canvas, this.ctx);
+        this.level = new FirstLevel(this.canvas, this.ctx);
+        this.player = new Player(
+            this.level.getPlayerStartingPos().x,
+            this.level.getPlayerStartingPos().y,
+            350,
+            350,
+            ActionType.IDLE);
+        this.camera = new OrthogonalCamera()
+        GameEngine.instance = this;
+    }
+
+    /**
+     * Singleton returning GameEngine instance
+     * @returns {GameEngine|null}
+     */
+    static getInstance() {
+        if (!GameEngine.instance) {
+            return null;
+        }
+        return GameEngine.instance;
+    }
+
+    /**
+     * Resize canvas to fit the window size
+     */
+    resize = () => {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        window.onresize = () => {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        }
+    }
+
+    /**
+     * Launch the game, load assets and start the game loop
+     */
+    launch() {
+        const audio = new Audio('music/flower_garden.ogg');
+        audio.volume = 0.1;
+        document.addEventListener("click", () => {
+            audio.play().then().catch((e) => console.log(e))
+        })
+        this.play();
+    }
+
+    // GameLoop
+    play = (time) => {
+        // Update orthognal camera
+        this.camera.updateX((this.player.coordinates.x + (this.player.size / 2)) - this.canvas.width / 2);
+        this.camera.updateY((this.player.coordinates.y + (this.player.size / 2)) - this.canvas.height / 2);
+        this.animate.animate(time, this.camera.coordinates.x, this.camera.coordinates.y);
+        window.requestAnimationFrame(this.play);
+    }
+
+    // Update current level to next one
+    updateLevel = (level) => {
+        this.level = level;
+    }
+}
