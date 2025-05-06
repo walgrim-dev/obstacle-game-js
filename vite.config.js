@@ -11,7 +11,7 @@ export default defineConfig({
 
     build: {
         rollupOptions: {
-            outDir: resolve(__dirname, 'client/dist'),
+            outDir: resolve(__dirname, 'dist'),
             emptyOutDir: true,
             /*
             input: {
