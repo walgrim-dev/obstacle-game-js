@@ -37,7 +37,7 @@ export default class PlayerTexture {
      */
     idleTexture = () => {
         return new FatTile([
-            new TileInfo(129, 0, 20, 20)
+            new TileInfo(129, 0, 14, 20)
         ]);
     }
 
@@ -46,8 +46,8 @@ export default class PlayerTexture {
      */
     moveRightTexture = () => {
         return new FatTile([
-            new TileInfo(328, 0, 19, 20),
-            new TileInfo(208, 0, 19, 20),
+            new TileInfo(328, 0, 15, 20),
+            new TileInfo(208, 0, 15, 20),
         ]);
     }
 
@@ -56,8 +56,8 @@ export default class PlayerTexture {
      */
     moveLeftTexture = () => {
         return new FatTile([
-            new TileInfo(169, 0, 19, 20),
-            new TileInfo(49, 0, 19, 20),
+            new TileInfo(169, 0, 15, 20),
+            new TileInfo(49, 0, 15, 20),
         ]);
     }
 }

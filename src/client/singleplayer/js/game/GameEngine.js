@@ -31,8 +31,8 @@ export default class GameEngine {
         this.player = new Player(
             this.level.getPlayerStartingPos().x,
             this.level.getPlayerStartingPos().y,
-            350,
-            350,
+            300,
+            300,
             ActionType.IDLE);
         this.camera = new OrthogonalCamera()
         GameEngine.instance = this;
