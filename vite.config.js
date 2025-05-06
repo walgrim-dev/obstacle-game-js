@@ -13,13 +13,12 @@ export default defineConfig({
         rollupOptions: {
             outDir: resolve(__dirname, 'dist'),
             emptyOutDir: true,
-            /*
             input: {
                 // clé “single” sert le index.html à la racine
                 single: resolve(__dirname, 'src/client/index.html'),
                 // clé “multi” sert ton index.html de multiplayer
                 multi:  resolve(__dirname, 'src/client/multiplayer/index.html')
-            }*/
+            }
         }
     }
 });
